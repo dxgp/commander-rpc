@@ -12,7 +12,6 @@ class DefenseNotificationService(DefenseNotificationServicer):
     def launch_missile(self, request, context):
         print("In launch missile******")
         # Call Commander notification service
-
         # Create commander stub object
         commander_channel = grpc.insecure_channel("localhost:50001")
         commander_stub = CommanderNotificationStub(commander_channel)
