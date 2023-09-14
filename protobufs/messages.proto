@@ -11,16 +11,16 @@ message survival_response{
 
 message Empty{}
 
-service DefenseNotificationService{
+service DefenseNotification{
     rpc launch_missile(missile_details) returns (Empty);
 }
-service CommanderNotificationService{
+service CommanderNotification{
     rpc missile_notification(missile_details) returns (Empty);
 }
-service SoldierNotificationService{
+service SoldierNotification{
     rpc notify_soldier(missile_details) returns (Empty);
 }
-service SoldierSurvivalService{
+service SoldierSurvival{
     rpc notify_alive_soldier(missile_details) returns (Empty);
     rpc soldier_status(Empty) returns (survival_response);
 }
