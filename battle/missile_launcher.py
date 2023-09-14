@@ -5,7 +5,7 @@ import random
 
 channel = grpc.insecure_channel("localhost:50000")
 stub = DefenseNotificationStub(channel)
-x = random.randint(0,9)
-y = random.randint(0,9)
-request = missile_details("m1", x, y, 1)
+x = random.randint(0, 9)
+y = random.randint(0, 9)
+request = missile_details(missile_type="m1", x=x, y=y, t=1)
 stub.launch_missile(request)
