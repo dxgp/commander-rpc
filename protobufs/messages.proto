@@ -1,4 +1,27 @@
 syntax = "proto3";
-message launch_missile{
-    
+message missile_details{
+    string missile_type = 1;
+    int32 x = 2;
+    int32 y = 3;
+    int32 t = 4;
 }
+message survival_response{
+    bool is_alive = 1;
+}
+
+message Empty{}
+
+service DefenseNotificationService{
+    rpc launch_missile(missile_details) returns (Empty);
+}
+service CommanderNotificationService{
+    rpc missile_notification(missile_details) returns (Empty);
+}
+service SoldierNotificationService{
+    rpc notify_soldier(missile_details) returns (Empty);
+}
+service SoldierSurvivalService{
+    rpc notify_alive_soldier(missile_details) returns (Empty);
+    rpc soldier_status(Empty) returns (survival_response);
+}
+
