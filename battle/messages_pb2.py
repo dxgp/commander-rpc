@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0emessages.proto\"H\n\x0fmissile_details\x12\x14\n\x0cmissile_type\x18\x01 \x01(\t\x12\t\n\x01x\x18\x02 \x01(\x05\x12\t\n\x01y\x18\x03 \x01(\x05\x12\t\n\x01t\x18\x04 \x01(\x05\"%\n\x11survival_response\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\"\x07\n\x05\x45mpty2H\n\x1a\x44\x65\x66\x65nseNotificationService\x12*\n\x0elaunch_missile\x12\x10.missile_details\x1a\x06.Empty2P\n\x1c\x43ommanderNotificationService\x12\x30\n\x14missile_notification\x12\x10.missile_details\x1a\x06.Empty2H\n\x1aSoldierNotificationService\x12*\n\x0enotify_soldier\x12\x10.missile_details\x1a\x06.Empty2x\n\x16SoldierSurvivalService\x12\x30\n\x14notify_alive_soldier\x12\x10.missile_details\x1a\x06.Empty\x12,\n\x0esoldier_status\x12\x06.Empty\x1a\x12.survival_responseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0emessages.proto\"H\n\x0fmissile_details\x12\x14\n\x0cmissile_type\x18\x01 \x01(\t\x12\t\n\x01x\x18\x02 \x01(\x05\x12\t\n\x01y\x18\x03 \x01(\x05\x12\t\n\x01t\x18\x04 \x01(\x05\"%\n\x11survival_response\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\"\x07\n\x05\x45mpty2A\n\x13\x44\x65\x66\x65nseNotification\x12*\n\x0elaunch_missile\x12\x10.missile_details\x1a\x06.Empty2I\n\x15\x43ommanderNotification\x12\x30\n\x14missile_notification\x12\x10.missile_details\x1a\x06.Empty2A\n\x13SoldierNotification\x12*\n\x0enotify_soldier\x12\x10.missile_details\x1a\x06.Empty2q\n\x0fSoldierSurvival\x12\x30\n\x14notify_alive_soldier\x12\x10.missile_details\x1a\x06.Empty\x12,\n\x0esoldier_status\x12\x06.Empty\x1a\x12.survival_responseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -27,12 +27,12 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_SURVIVAL_RESPONSE']._serialized_end=129
   _globals['_EMPTY']._serialized_start=131
   _globals['_EMPTY']._serialized_end=138
-  _globals['_DEFENSENOTIFICATIONSERVICE']._serialized_start=140
-  _globals['_DEFENSENOTIFICATIONSERVICE']._serialized_end=212
-  _globals['_COMMANDERNOTIFICATIONSERVICE']._serialized_start=214
-  _globals['_COMMANDERNOTIFICATIONSERVICE']._serialized_end=294
-  _globals['_SOLDIERNOTIFICATIONSERVICE']._serialized_start=296
-  _globals['_SOLDIERNOTIFICATIONSERVICE']._serialized_end=368
-  _globals['_SOLDIERSURVIVALSERVICE']._serialized_start=370
-  _globals['_SOLDIERSURVIVALSERVICE']._serialized_end=490
+  _globals['_DEFENSENOTIFICATION']._serialized_start=140
+  _globals['_DEFENSENOTIFICATION']._serialized_end=205
+  _globals['_COMMANDERNOTIFICATION']._serialized_start=207
+  _globals['_COMMANDERNOTIFICATION']._serialized_end=280
+  _globals['_SOLDIERNOTIFICATION']._serialized_start=282
+  _globals['_SOLDIERNOTIFICATION']._serialized_end=347
+  _globals['_SOLDIERSURVIVAL']._serialized_start=349
+  _globals['_SOLDIERSURVIVAL']._serialized_end=462
 # @@protoc_insertion_point(module_scope)
