@@ -8,12 +8,13 @@ import random
 
 is_alive = True
 soldier_speed = random.randint(0,5)
+soldier_number = 0
 
 def can_survive(mtype, x, y, t):
     return True
 class SoldierNotificationService(SoldierNotificationServicer):
     def notify_soldier(self, request, context):
-        print("Soldier received missile notification from commander! Calculating survival!")
+        print(f"Soldier {soldier_number} received missile notification from commander! Calculating survival!")
         missile_x = request.x
         missile_y = request.y
         time_remaining = request.t
@@ -27,9 +28,11 @@ class SoldierNotificationService(SoldierNotificationServicer):
         return survival
         
 def serve():
+    global soldier_number
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
     add_SoldierNotificationServicer_to_server(SoldierNotificationService(), server)
     server.add_insecure_port(f"localhost:{sys.argv[1]}")
+    soldier_number = (int(sys.argv[1]) - 50002 + 1)
     server.start()
     server.wait_for_termination()
 
