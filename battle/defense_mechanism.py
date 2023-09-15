@@ -13,7 +13,7 @@ class DefenseNotificationService(DefenseNotificationServicer):
         print("In launch missile******")
         # Call Commander notification service
         # Create commander stub object
-        commander_channel = grpc.insecure_channel("172.17.85.80:50001")
+        commander_channel = grpc.insecure_channel("localhost:50001")
         commander_stub = CommanderNotificationStub(commander_channel)
         # Send missile details to commander
         comm_request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
@@ -25,7 +25,7 @@ def serve():
     print("****Server started")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     add_DefenseNotificationServicer_to_server(DefenseNotificationService(), server)
-    server.add_insecure_port("172.17.85.111:50000")
+    server.add_insecure_port("localhost:50000")
     server.start()
     server.wait_for_termination()
 

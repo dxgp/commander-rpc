@@ -13,6 +13,7 @@ def can_survive(mtype, x, y, t):
     return True
 class SoldierNotificationService(SoldierNotificationServicer):
     def notify_soldier(self, request, context):
+        print("Soldier received missile notification from commander! Calculating survival!")
         missile_x = request.x
         missile_y = request.y
         time_remaining = request.t

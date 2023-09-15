@@ -9,7 +9,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
         channel = grpc.insecure_channel("localhost:50002")
         stub = SoldierNotificationStub(channel)
         request = missile_details(missile_type = request.missile_type, x = request.x, y = request.y, t = request.t)
-        # stub.notify_soldier()
+        stub.notify_soldier(request)
         return Empty()
     
 def serve():
