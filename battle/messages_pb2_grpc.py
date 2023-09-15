@@ -141,12 +141,23 @@ class SoldierNotificationStub(object):
                 request_serializer=messages__pb2.missile_details.SerializeToString,
                 response_deserializer=messages__pb2.Empty.FromString,
                 )
+        self.soldier_status = channel.unary_unary(
+                '/SoldierNotification/soldier_status',
+                request_serializer=messages__pb2.Empty.SerializeToString,
+                response_deserializer=messages__pb2.survival_response.FromString,
+                )
 
 
 class SoldierNotificationServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def notify_soldier(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def soldier_status(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -159,6 +170,11 @@ def add_SoldierNotificationServicer_to_server(servicer, server):
                     servicer.notify_soldier,
                     request_deserializer=messages__pb2.missile_details.FromString,
                     response_serializer=messages__pb2.Empty.SerializeToString,
+            ),
+            'soldier_status': grpc.unary_unary_rpc_method_handler(
+                    servicer.soldier_status,
+                    request_deserializer=messages__pb2.Empty.FromString,
+                    response_serializer=messages__pb2.survival_response.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -187,83 +203,6 @@ class SoldierNotification(object):
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
-
-class SoldierSurvivalStub(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def __init__(self, channel):
-        """Constructor.
-
-        Args:
-            channel: A grpc.Channel.
-        """
-        self.notify_alive_soldier = channel.unary_unary(
-                '/SoldierSurvival/notify_alive_soldier',
-                request_serializer=messages__pb2.missile_details.SerializeToString,
-                response_deserializer=messages__pb2.Empty.FromString,
-                )
-        self.soldier_status = channel.unary_unary(
-                '/SoldierSurvival/soldier_status',
-                request_serializer=messages__pb2.Empty.SerializeToString,
-                response_deserializer=messages__pb2.survival_response.FromString,
-                )
-
-
-class SoldierSurvivalServicer(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def notify_alive_soldier(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def soldier_status(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-
-def add_SoldierSurvivalServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-            'notify_alive_soldier': grpc.unary_unary_rpc_method_handler(
-                    servicer.notify_alive_soldier,
-                    request_deserializer=messages__pb2.missile_details.FromString,
-                    response_serializer=messages__pb2.Empty.SerializeToString,
-            ),
-            'soldier_status': grpc.unary_unary_rpc_method_handler(
-                    servicer.soldier_status,
-                    request_deserializer=messages__pb2.Empty.FromString,
-                    response_serializer=messages__pb2.survival_response.SerializeToString,
-            ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-            'SoldierSurvival', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
- # This class is part of an EXPERIMENTAL API.
-class SoldierSurvival(object):
-    """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def notify_alive_soldier(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/SoldierSurvival/notify_alive_soldier',
-            messages__pb2.missile_details.SerializeToString,
-            messages__pb2.Empty.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
     @staticmethod
     def soldier_status(request,
             target,
@@ -275,7 +214,7 @@ class SoldierSurvival(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/SoldierSurvival/soldier_status',
+        return grpc.experimental.unary_unary(request, target, '/SoldierNotification/soldier_status',
             messages__pb2.Empty.SerializeToString,
             messages__pb2.survival_response.FromString,
             options, channel_credentials,
