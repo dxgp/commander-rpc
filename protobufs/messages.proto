@@ -19,9 +19,6 @@ service CommanderNotification{
 }
 service SoldierNotification{
     rpc notify_soldier(missile_details) returns (Empty);
-}
-service SoldierSurvival{
-    rpc notify_alive_soldier(missile_details) returns (Empty);
     rpc soldier_status(Empty) returns (survival_response);
 }
 
