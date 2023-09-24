@@ -6,10 +6,6 @@ from messages_pb2 import missile_details, Empty
 class CommanderNotificationService(CommanderNotificationServicer):
     def missile_notification(self, request, context):
         print(f"Commander received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}")
-        # channel = grpc.insecure_channel("localhost:50002")
-        # stub = SoldierNotificationStub(channel)
-        # request = missile_details(missile_type = request.missile_type, x = request.x, y = request.y, t = request.t)
-        # stub.notify_soldier(request)\
         notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
         return Empty()
     
