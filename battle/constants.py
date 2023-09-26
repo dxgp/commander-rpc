@@ -1,11 +1,14 @@
 from enum import Enum
 
 
-class MissileType(Enum):
-    M1 = 1
-    M2 = 2
-    M3 = 3
-    M4 = 4
+SOLDIER_COUNT = 1
+
+
+class MissileType:
+    M1 = "M1"
+    M2 = "M2"
+    M3 = "M3"
+    M4 = "M4"
 
 
 # Radius is number of cells in vertical or horizontal direction from the centre cell in the impact zone.
@@ -52,3 +55,6 @@ class ImpactArea:
         self.right_x = right_x
         self.top_y = top_y
         self.bottom_y = bottom_y
+
+    def __str__(self) -> str:
+        return f"left_x: {self.left_x} right_x: {self.right_x} | top_y: {self.top_y} bottom_y: {self.bottom_y}"
