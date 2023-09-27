@@ -6,9 +6,10 @@ from messages_pb2_grpc import (
     add_CommanderNotificationServicer_to_server,
 )
 from messages_pb2 import missile_details, Empty
-from constants import SOLDIER_COUNT
+from constants import SOLDIER_COUNT,get_impact_area
 import numpy as np
 import termtables as tt
+
 
 
 # Parent Class to store the current situation
@@ -52,6 +53,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
         )
         self.notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
         # now, we'll have to poll the status of each soldier and update the battlefield accordingly
+        self.print_impact_area(request.missile_type,request.x,request.y)
         self.update_board_positions()
         # update_commander_if_needed()
         return Empty()
@@ -66,6 +68,16 @@ class CommanderNotificationService(CommanderNotificationServicer):
             print(f"Soldier {soldier} notified of incoming missile!")
         print(self.get_alive_soldiers())
 
+    def print_impact_area(self,missile_type, x,y):
+        impact_area = get_impact_area(missile_type=missile_type, missile_x=x, missile_y=y)
+        print(f"range({impact_area.left_x}, {impact_area.right_x+1})")
+        print(f"range({impact_area.bottom_y},{impact_area.top_y+1})")
+        for i in range(impact_area.left_x, impact_area.right_x+1):
+            for j in range(impact_area.bottom_y,impact_area.top_y+1):
+                if(self.battlefield.battle_grid[j][i]==" "):
+                    self.battlefield.battle_grid[j][i] = "*"
+                    print(f"x:{i},y:{j})")
+        self.battlefield.print_battlefield()
     def update_board_positions(self):
         self.battlefield.init_new_grid()
         self.update_soldier_status()

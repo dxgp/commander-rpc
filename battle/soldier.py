@@ -5,7 +5,7 @@ from concurrent import futures
 from messages_pb2_grpc import SoldierNotificationServicer, add_SoldierNotificationServicer_to_server
 from messages_pb2 import Empty, survival_response, position_details
 
-from constants import Direction, BoardEdges, get_impact_area
+from constants import Direction, BoardEdges, get_impact_area,ImpactArea
 
 
 class Soldier:
