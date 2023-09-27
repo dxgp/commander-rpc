@@ -3,18 +3,19 @@ import random
 import sys
 from concurrent import futures
 from messages_pb2_grpc import SoldierNotificationServicer, add_SoldierNotificationServicer_to_server
-from messages_pb2 import missile_details, Empty, survival_response
+from messages_pb2 import missile_details, Empty, survival_response,position_details
 
 from constants import missile_radius, Direction, BoardEdges, ImpactArea
 
 
 class Soldier:
     def __init__(self, soldier_number) -> None:
-        self.x = 7  # random.randint(0, 9)
-        self.y = 7  # random.randint(0, 9)
+        self.x = random.randint(0, 9)
+        self.y = random.randint(0, 9)
         self.speed = random.randint(1, 5)
         self.is_alive = True
         self.number = soldier_number
+        print(f"Soldier initialied with arguments: (x:{self.x})|(y:{self.y})|(speed:{self.speed})|(sno: {self.number})")
 
     def __str__(self) -> str:
         return f"NUMBER: {self.number} IS_ALIVE: {self.is_alive} | POS:({self.x}, {self.y}) | SPEED: {self.speed}"
@@ -22,7 +23,7 @@ class Soldier:
 
 class SoldierNotificationService(SoldierNotificationServicer):
     def __init__(self) -> None:
-        soldier_number = int(sys.argv[1]) - 50002 + 1
+        soldier_number = int(sys.argv[1]) - 60000 #okay, need to pass a port number as the argument
         self.soldier = Soldier(soldier_number)
 
     # RPCs
@@ -41,11 +42,14 @@ class SoldierNotificationService(SoldierNotificationServicer):
         print("Soldier status polled...")
         survival = survival_response(is_alive=self.soldier.is_alive)
         return survival
+    
+    def soldier_position(self, request, context):
+        return position_details(x = self.soldier.x,y = self.soldier.y)
 
     # Util methods
     def serve(self):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
-        add_SoldierNotificationServicer_to_server(SoldierNotificationService(), server)
+        add_SoldierNotificationServicer_to_server(self, server)
         server.add_insecure_port(f"localhost:{sys.argv[1]}")
 
         server.start()

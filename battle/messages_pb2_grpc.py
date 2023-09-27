@@ -146,6 +146,11 @@ class SoldierNotificationStub(object):
                 request_serializer=messages__pb2.Empty.SerializeToString,
                 response_deserializer=messages__pb2.survival_response.FromString,
                 )
+        self.soldier_position = channel.unary_unary(
+                '/SoldierNotification/soldier_position',
+                request_serializer=messages__pb2.Empty.SerializeToString,
+                response_deserializer=messages__pb2.position_details.FromString,
+                )
 
 
 class SoldierNotificationServicer(object):
@@ -163,6 +168,12 @@ class SoldierNotificationServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def soldier_position(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SoldierNotificationServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -175,6 +186,11 @@ def add_SoldierNotificationServicer_to_server(servicer, server):
                     servicer.soldier_status,
                     request_deserializer=messages__pb2.Empty.FromString,
                     response_serializer=messages__pb2.survival_response.SerializeToString,
+            ),
+            'soldier_position': grpc.unary_unary_rpc_method_handler(
+                    servicer.soldier_position,
+                    request_deserializer=messages__pb2.Empty.FromString,
+                    response_serializer=messages__pb2.position_details.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -217,5 +233,22 @@ class SoldierNotification(object):
         return grpc.experimental.unary_unary(request, target, '/SoldierNotification/soldier_status',
             messages__pb2.Empty.SerializeToString,
             messages__pb2.survival_response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def soldier_position(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/SoldierNotification/soldier_position',
+            messages__pb2.Empty.SerializeToString,
+            messages__pb2.position_details.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

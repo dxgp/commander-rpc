@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-SOLDIER_COUNT = 1
+SOLDIER_COUNT = 2
 
 
 class MissileType:

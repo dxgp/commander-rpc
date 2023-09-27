@@ -8,9 +8,9 @@ channel = grpc.insecure_channel("localhost:50000")
 stub = DefenseNotificationStub(channel)
 
 # Missile params
-# x = random.randint(0, 9)
-# y = random.randint(0, 9)
-x, y = 6, 6
+x = random.randint(0, 9)
+y = random.randint(0, 9)
+# x, y = 6, 6
 missile_type = MissileType.M3
 
 request = missile_details(missile_type=missile_type, x=x, y=y, t=1)
