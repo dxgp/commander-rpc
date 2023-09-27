@@ -20,7 +20,6 @@ class BattleField:
 
     def print_battlefield(self):
         tt.print(self.battle_grid)
-
     def init_new_grid(self):
         self.battle_grid = np.empty((10, 10), dtype=object)
         for i in range(self.battle_grid.shape[0]):
@@ -41,6 +40,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
 
         # need to do an initial poll of the soldier positions here
         alive_soldiers = self.get_alive_soldiers()
+
         for soldier in alive_soldiers:
             self.update_soldier_position(soldier)
 
@@ -64,12 +64,14 @@ class CommanderNotificationService(CommanderNotificationServicer):
             request = missile_details(missile_type=missile_type, x=missile_x, y=missile_y, t=missile_t)
             empty_val = stub.notify_soldier(request)
             print(f"Soldier {soldier} notified of incoming missile!")
+        print(self.get_alive_soldiers())
 
     def update_board_positions(self):
         self.battlefield.init_new_grid()
         self.update_soldier_status()
         alive_soldiers = self.get_alive_soldiers()
-
+        print("update_board called.")
+        print(alive_soldiers)
         for soldier in alive_soldiers:
             self.update_soldier_position(soldier)
 
@@ -80,8 +82,8 @@ class CommanderNotificationService(CommanderNotificationServicer):
         stub = self.soldier_stubs.get(soldier)
         request = Empty()
         pos_reply = stub.soldier_position(request)
-
-        if self.battlefield.battle_grid[pos_reply.x][pos_reply.y] == "-":
+        print("update_soldier_position called.")
+        if self.battlefield.battle_grid[pos_reply.x][pos_reply.y] == " ":
             self.battlefield.battle_grid[pos_reply.x][pos_reply.y] = str(soldier)
         else:
             self.battlefield.battle_grid[pos_reply.x][pos_reply.y] += f" {soldier}"
@@ -94,15 +96,15 @@ class CommanderNotificationService(CommanderNotificationServicer):
             stub = self.soldier_stubs.get(soldier)
             request = Empty()
             survival_reply = stub.soldier_status(request)
-            self.battlefield.all_soldiers[soldier] = survival_reply
+            self.battlefield.all_soldiers[soldier] = survival_reply.is_alive
 
     # Return only alive soldiers from all_soldiers
     def get_alive_soldiers(self):
         alive_soldiers = []
         for soldier, status in self.battlefield.all_soldiers.items():
+
             if status == True:
                 alive_soldiers.append(soldier)
-
         return alive_soldiers
 
 
