@@ -6,7 +6,7 @@ from messages_pb2_grpc import (
     add_CommanderNotificationServicer_to_server,
 )
 from messages_pb2 import missile_details, Empty
-from constants import SOLDIER_COUNT,get_impact_area
+from constants import SOLDIER_COUNT,get_impact_area,ImpactArea
 import numpy as np
 import termtables as tt
 
@@ -73,7 +73,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
         print(f"range({impact_area.left_x}, {impact_area.right_x+1})")
         print(f"range({impact_area.bottom_y},{impact_area.top_y+1})")
         for i in range(impact_area.left_x, impact_area.right_x+1):
-            for j in range(impact_area.bottom_y,impact_area.top_y+1):
+            for j in range(impact_area.top_y,impact_area.bottom_y+1):
                 if(self.battlefield.battle_grid[j][i]==" "):
                     self.battlefield.battle_grid[j][i] = "*"
                     print(f"x:{i},y:{j})")
@@ -95,12 +95,12 @@ class CommanderNotificationService(CommanderNotificationServicer):
         request = Empty()
         pos_reply = stub.soldier_position(request)
         print("update_soldier_position called.")
-        if self.battlefield.battle_grid[pos_reply.x][pos_reply.y] == " ":
-            self.battlefield.battle_grid[pos_reply.x][pos_reply.y] = str(soldier)
+        if self.battlefield.battle_grid[pos_reply.y][pos_reply.x] == " ":
+            self.battlefield.battle_grid[pos_reply.y][pos_reply.x] = str(soldier)
         else:
-            self.battlefield.battle_grid[pos_reply.x][pos_reply.y] += f" {soldier}"
+            self.battlefield.battle_grid[pos_reply.y][pos_reply.x] += f" {soldier}"
 
-        print(f"Soldier {soldier}'s position polled at {pos_reply.x},{pos_reply.y}")
+        #print(f"Soldier {soldier}'s position polled at {pos_reply.x},{pos_reply.y}")
 
     # Polls soldiers for liveness and updates their status in the battlefield
     def update_soldier_status(self):

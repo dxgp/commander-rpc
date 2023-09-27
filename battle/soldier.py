@@ -12,6 +12,8 @@ class Soldier:
     def __init__(self, soldier_number) -> None:
         self.x = random.randint(0, 9)
         self.y = random.randint(0, 9)
+        # self.x = 5
+        # self.y = 5
         self.speed = random.randint(1, 5)
         self.is_alive = True
         self.number = soldier_number
@@ -27,6 +29,7 @@ class Soldier:
 class SoldierNotificationService(SoldierNotificationServicer):
     def __init__(self) -> None:
         soldier_number = int(sys.argv[1]) - 60000  # okay, need to pass a port number as the argument
+        #soldier_number = 60000 - 60000
         self.soldier = Soldier(soldier_number)
 
     # RPCs
@@ -58,7 +61,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
         add_SoldierNotificationServicer_to_server(self, server)
         server.add_insecure_port(f"localhost:{sys.argv[1]}")
-
+        #server.add_insecure_port(f"localhost:{60000}")
         server.start()
         print(f"SOLDIER {self.soldier.number} STARTED...")
         server.wait_for_termination()
@@ -105,7 +108,10 @@ class SoldierNotificationService(SoldierNotificationServicer):
         right_distance = abs(impact_area.right_x - self.soldier.x)
         bottom_distance = abs(self.soldier.y - impact_area.bottom_y)
         left_distance = abs(self.soldier.x - impact_area.left_x)
-
+        print("top_distance:",top_distance)
+        print("right_distance:",right_distance)
+        print("bottom_distance:",bottom_distance)
+        print("left_distance:",left_distance)
         return top_distance, bottom_distance, left_distance, right_distance
 
     def can_get_hit(self, impact_area):
@@ -115,10 +121,10 @@ class SoldierNotificationService(SoldierNotificationServicer):
 
     def get_available_directions_for_movement(self, impact_area):
         res = []
-        if impact_area.top_y < BoardEdges.TOP_Y:
+        if impact_area.top_y > BoardEdges.TOP_Y:
             res.append(Direction.TOP)
 
-        if impact_area.bottom_y > BoardEdges.BOTTOM_Y:
+        if impact_area.bottom_y < BoardEdges.BOTTOM_Y:
             res.append(Direction.BOTTOM)
 
         if impact_area.left_x > BoardEdges.LEFT_X:
@@ -141,13 +147,26 @@ class SoldierNotificationService(SoldierNotificationServicer):
         print(f"SELECTING MOVE: {available_moves[index]}")
         direction = available_moves[index][1]
         if direction == Direction.RIGHT:
-            self.soldier.x = min(self.soldier.x + self.soldier.speed, self.soldier.x + d[0] + 1, BoardEdges.RIGHT_X)
+            #self.soldier.x = min(self.soldier.x + self.soldier.speed, self.soldier.x + d[0] + 1, BoardEdges.RIGHT_X)
+            if(self.soldier.speed>d[0]):
+                self.soldier.x = self.soldier.x + d[0] + 1
+            print(f"***(RIGHT) PARAMS***: min({self.soldier.x + self.soldier.speed}, {self.soldier.x + d[0] + 1}, {BoardEdges.RIGHT_X})")
         elif direction == Direction.LEFT:
-            self.soldier.x = max(self.soldier.x - self.soldier.speed, self.soldier.x - d[0] - 1, BoardEdges.LEFT_X)
+            #self.soldier.x = max(self.soldier.x - self.soldier.speed, self.soldier.x - d[0] - 1, BoardEdges.LEFT_X)
+            if(self.soldier.speed > d[0]):
+                self.soldier.x = self.soldier.x - d[0] - 1
+            print(f"***(LEFT) PARAMS***: max({self.soldier.x - self.soldier.speed}, {self.soldier.x - d[0] - 1}, {BoardEdges.LEFT_X})")
         elif direction == Direction.TOP:
-            self.soldier.y = max(self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.TOP_Y)
+            # self.soldier.y = max(self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.TOP_Y)
+            if(self.soldier.speed>d[0]):
+                self.soldier.y = self.soldier.y - d[0] - 1
+            print(f"***(TOP) PARAMS***: max({self.soldier.y - self.soldier.speed}, {self.soldier.y - d[0] - 1}, {BoardEdges.TOP_Y})")
         else:
-            self.soldier.y = min(self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.BOTTOM_Y)
+            #self.soldier.y = min(self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.BOTTOM_Y)
+            if(self.soldier.speed>d[0]):
+                self.soldier.y = self.soldier.y + d[0] + 1
+            #print(f"***PARAMS***: max({self.soldier.y + self.soldier.speed}, {self.soldier.y + d[0] + 1}, {BoardEdges.BOTTOM_Y})")
+            print(f"***(BOTTOM) NEW POSITION***:({self.soldier.x},{self.soldier.y})")
 
 
 if __name__ == "__main__":

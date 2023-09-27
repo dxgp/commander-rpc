@@ -10,7 +10,7 @@ stub = DefenseNotificationStub(channel)
 # Missile params
 x = random.randint(0, 9)
 y = random.randint(0, 9)
-# x, y = 6, 6
+# x, y = 5, 5
 missile_type = MissileType.M3
 
 request = missile_details(missile_type=missile_type, x=x, y=y, t=1)
