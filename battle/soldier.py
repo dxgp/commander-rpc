@@ -3,9 +3,9 @@ import random
 import sys
 from concurrent import futures
 from messages_pb2_grpc import SoldierNotificationServicer, add_SoldierNotificationServicer_to_server
-from messages_pb2 import missile_details, Empty, survival_response,position_details
+from messages_pb2 import Empty, survival_response, position_details
 
-from constants import missile_radius, Direction, BoardEdges, ImpactArea
+from constants import Direction, BoardEdges, get_impact_area
 
 
 class Soldier:
@@ -15,7 +15,10 @@ class Soldier:
         self.speed = random.randint(1, 5)
         self.is_alive = True
         self.number = soldier_number
-        print(f"Soldier initialied with arguments: (x:{self.x})|(y:{self.y})|(speed:{self.speed})|(sno: {self.number})")
+        self.is_commander = False
+        print(
+            f"Soldier initialied with arguments: (x:{self.x})|(y:{self.y})|(speed:{self.speed})|(sno: {self.number})"
+        )
 
     def __str__(self) -> str:
         return f"NUMBER: {self.number} IS_ALIVE: {self.is_alive} | POS:({self.x}, {self.y}) | SPEED: {self.speed}"
@@ -23,7 +26,7 @@ class Soldier:
 
 class SoldierNotificationService(SoldierNotificationServicer):
     def __init__(self) -> None:
-        soldier_number = int(sys.argv[1]) - 60000 #okay, need to pass a port number as the argument
+        soldier_number = int(sys.argv[1]) - 60000  # okay, need to pass a port number as the argument
         self.soldier = Soldier(soldier_number)
 
     # RPCs
@@ -42,9 +45,13 @@ class SoldierNotificationService(SoldierNotificationServicer):
         print("Soldier status polled...")
         survival = survival_response(is_alive=self.soldier.is_alive)
         return survival
-    
+
     def soldier_position(self, request, context):
-        return position_details(x = self.soldier.x,y = self.soldier.y)
+        return position_details(x=self.soldier.x, y=self.soldier.y)
+
+    def make_commander(self, request, context):
+        self.soldier.is_commander = True
+        return Empty()
 
     # Util methods
     def serve(self):
@@ -57,7 +64,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         server.wait_for_termination()
 
     def can_survive(self, missile_type, missile_x, missile_y, t):
-        impact_area = self.get_impact_area(missile_type, missile_x, missile_y)
+        impact_area = get_impact_area(missile_type, missile_x, missile_y)
         print("IMPACT AREA:")
         print(impact_area)
         # If soldier is in the impact zone
@@ -88,23 +95,6 @@ class SoldierNotificationService(SoldierNotificationServicer):
         else:
             print(f"SOLDIER NOT HIT-> {self.soldier}")
             return True
-
-    def get_impact_area(self, missile_type, missile_x, missile_y):
-        # Calculate boundaries of missile impact area
-        missile_left_x = missile_x - missile_radius[missile_type]
-        missile_right_x = missile_x + missile_radius[missile_type]
-
-        missile_top_y = missile_y + missile_radius[missile_type]
-        missile_bottom_y = missile_y - missile_radius[missile_type]
-        if(missile_left_x<BoardEdges.LEFT_X): missile_left_x = BoardEdges.LEFT_X
-        if(missile_right_x>BoardEdges.RIGHT_X): missile_right_x = BoardEdges.RIGHT_X
-        if(missile_bottom_y<BoardEdges.BOTTOM_Y): missile_bottom_y = BoardEdges.BOTTOM_Y
-        if(missile_bottom_y>BoardEdges.TOP_Y): missile_top_y = BoardEdges.TOP_Y
-        impact_area = ImpactArea(
-            left_x=missile_left_x, right_x=missile_right_x, top_y=missile_top_y, bottom_y=missile_bottom_y
-        )
-
-        return impact_area
 
     def get_distances_from_impact_edges(self, impact_area):
         # Trivial case, when missile type is M1 i.e radius = 0
@@ -145,13 +135,21 @@ class SoldierNotificationService(SoldierNotificationServicer):
             direction = d[1]
             if direction in available_directions:
                 if direction == Direction.RIGHT:
-                    self.soldier.x = min(self.soldier.x + self.soldier.speed, BoardEdges.RIGHT_X)
+                    self.soldier.x = min(
+                        self.soldier.x + self.soldier.speed, self.soldier.x + d[0] + 1, BoardEdges.RIGHT_X
+                    )
                 elif direction == Direction.LEFT:
-                    self.soldier.x = max(self.soldier.x - self.soldier.speed, BoardEdges.LEFT_X)
+                    self.soldier.x = max(
+                        self.soldier.x - self.soldier.speed, self.soldier.x - d[0] - 1, BoardEdges.LEFT_X
+                    )
                 elif direction == Direction.TOP:
-                    self.soldier.y = min(self.soldier.y + self.soldier.speed, BoardEdges.TOP_Y)
+                    self.soldier.y = min(
+                        self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.TOP_Y
+                    )
                 else:
-                    self.soldier.y = max(self.soldier.y - self.soldier.speed, BoardEdges.BOTTOM_Y)
+                    self.soldier.y = max(
+                        self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.BOTTOM_Y
+                    )
 
                 return
 
