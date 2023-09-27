@@ -65,8 +65,8 @@ def get_impact_area(missile_type, missile_x, missile_y):
     missile_left_x = missile_x - missile_radius[missile_type]
     missile_right_x = missile_x + missile_radius[missile_type]
 
-    missile_top_y = missile_y + missile_radius[missile_type]
-    missile_bottom_y = missile_y - missile_radius[missile_type]
+    missile_top_y = missile_y - missile_radius[missile_type]
+    missile_bottom_y = missile_y + missile_radius[missile_type]
     impact_area = ImpactArea(
         left_x=missile_left_x, right_x=missile_right_x, top_y=missile_top_y, bottom_y=missile_bottom_y
     )

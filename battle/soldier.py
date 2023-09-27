@@ -101,16 +101,16 @@ class SoldierNotificationService(SoldierNotificationServicer):
         if impact_area.left_x == impact_area.right_x:
             return 0, 0, 0, 0
 
-        top_distance = impact_area.top_y - self.soldier.y
-        right_distance = impact_area.right_x - self.soldier.x
-        bottom_distance = self.soldier.y - impact_area.bottom_y
-        left_distance = self.soldier.x - impact_area.left_x
+        top_distance = abs(impact_area.top_y - self.soldier.y)
+        right_distance = abs(impact_area.right_x - self.soldier.x)
+        bottom_distance = abs(self.soldier.y - impact_area.bottom_y)
+        left_distance = abs(self.soldier.x - impact_area.left_x)
 
         return top_distance, bottom_distance, left_distance, right_distance
 
     def can_get_hit(self, impact_area):
         return (impact_area.left_x <= self.soldier.x <= impact_area.right_x) and (
-            impact_area.top_y >= self.soldier.y >= impact_area.bottom_y
+            impact_area.top_y <= self.soldier.y <= impact_area.bottom_y
         )
 
     def get_available_directions_for_movement(self, impact_area):
@@ -145,31 +145,9 @@ class SoldierNotificationService(SoldierNotificationServicer):
         elif direction == Direction.LEFT:
             self.soldier.x = max(self.soldier.x - self.soldier.speed, self.soldier.x - d[0] - 1, BoardEdges.LEFT_X)
         elif direction == Direction.TOP:
-            self.soldier.y = min(self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.TOP_Y)
+            self.soldier.y = max(self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.TOP_Y)
         else:
-            self.soldier.y = max(self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.BOTTOM_Y)
-
-        # for d in distances:
-        #     direction = d[1]
-        #     if direction in available_directions:
-        #         if direction == Direction.RIGHT:
-        #             self.soldier.x = min(
-        #                 self.soldier.x + self.soldier.speed, self.soldier.x + d[0] + 1, BoardEdges.RIGHT_X
-        #             )
-        #         elif direction == Direction.LEFT:
-        #             self.soldier.x = max(
-        #                 self.soldier.x - self.soldier.speed, self.soldier.x - d[0] - 1, BoardEdges.LEFT_X
-        #             )
-        #         elif direction == Direction.TOP:
-        #             self.soldier.y = min(
-        #                 self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.TOP_Y
-        #             )
-        #         else:
-        #             self.soldier.y = max(
-        #                 self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.BOTTOM_Y
-        #             )
-
-        #         return
+            self.soldier.y = min(self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.BOTTOM_Y)
 
 
 if __name__ == "__main__":
