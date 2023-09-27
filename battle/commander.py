@@ -25,7 +25,7 @@ class BattleField:
         self.battle_grid = np.empty((10, 10), dtype=object)
         for i in range(self.battle_grid.shape[0]):
             for j in range(self.battle_grid.shape[1]):
-                self.battle_grid[i][j] = "-"
+                self.battle_grid[i][j] = " "
 
 
 class CommanderNotificationService(CommanderNotificationServicer):

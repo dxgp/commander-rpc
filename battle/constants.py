@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-SOLDIER_COUNT = 2
+SOLDIER_COUNT = 9
 
 
 class MissileType:
@@ -43,10 +43,10 @@ class Direction(Enum):
 
 
 class BoardEdges:
-    TOP_Y = 10
+    TOP_Y = 9
     BOTTOM_Y = 0
     LEFT_X = 0
-    RIGHT_X = 10
+    RIGHT_X = 9
 
 
 class ImpactArea:

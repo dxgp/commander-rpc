@@ -96,6 +96,10 @@ class SoldierNotificationService(SoldierNotificationServicer):
 
         missile_top_y = missile_y + missile_radius[missile_type]
         missile_bottom_y = missile_y - missile_radius[missile_type]
+        if(missile_left_x<BoardEdges.LEFT_X): missile_left_x = BoardEdges.LEFT_X
+        if(missile_right_x>BoardEdges.RIGHT_X): missile_right_x = BoardEdges.RIGHT_X
+        if(missile_bottom_y<BoardEdges.BOTTOM_Y): missile_bottom_y = BoardEdges.BOTTOM_Y
+        if(missile_bottom_y>BoardEdges.TOP_Y): missile_top_y = BoardEdges.TOP_Y
         impact_area = ImpactArea(
             left_x=missile_left_x, right_x=missile_right_x, top_y=missile_top_y, bottom_y=missile_bottom_y
         )
