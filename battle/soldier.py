@@ -131,27 +131,45 @@ class SoldierNotificationService(SoldierNotificationServicer):
 
     # Move soldier in the direction of the least distance from impact area edge
     def move_soldier(self, distances, available_directions):
+        available_moves = []
         for d in distances:
-            direction = d[1]
-            if direction in available_directions:
-                if direction == Direction.RIGHT:
-                    self.soldier.x = min(
-                        self.soldier.x + self.soldier.speed, self.soldier.x + d[0] + 1, BoardEdges.RIGHT_X
-                    )
-                elif direction == Direction.LEFT:
-                    self.soldier.x = max(
-                        self.soldier.x - self.soldier.speed, self.soldier.x - d[0] - 1, BoardEdges.LEFT_X
-                    )
-                elif direction == Direction.TOP:
-                    self.soldier.y = min(
-                        self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.TOP_Y
-                    )
-                else:
-                    self.soldier.y = max(
-                        self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.BOTTOM_Y
-                    )
+            if d[1] in available_directions:
+                available_moves.append(d)
 
-                return
+        print(f"AVAILABLE MOVES: {available_moves}")
+        index = random.randint(0, len(available_moves) - 1)
+        print(f"SELECTING MOVE: {available_moves[index]}")
+        direction = available_moves[index][1]
+        if direction == Direction.RIGHT:
+            self.soldier.x = min(self.soldier.x + self.soldier.speed, self.soldier.x + d[0] + 1, BoardEdges.RIGHT_X)
+        elif direction == Direction.LEFT:
+            self.soldier.x = max(self.soldier.x - self.soldier.speed, self.soldier.x - d[0] - 1, BoardEdges.LEFT_X)
+        elif direction == Direction.TOP:
+            self.soldier.y = min(self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.TOP_Y)
+        else:
+            self.soldier.y = max(self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.BOTTOM_Y)
+
+        # for d in distances:
+        #     direction = d[1]
+        #     if direction in available_directions:
+        #         if direction == Direction.RIGHT:
+        #             self.soldier.x = min(
+        #                 self.soldier.x + self.soldier.speed, self.soldier.x + d[0] + 1, BoardEdges.RIGHT_X
+        #             )
+        #         elif direction == Direction.LEFT:
+        #             self.soldier.x = max(
+        #                 self.soldier.x - self.soldier.speed, self.soldier.x - d[0] - 1, BoardEdges.LEFT_X
+        #             )
+        #         elif direction == Direction.TOP:
+        #             self.soldier.y = min(
+        #                 self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.TOP_Y
+        #             )
+        #         else:
+        #             self.soldier.y = max(
+        #                 self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.BOTTOM_Y
+        #             )
+
+        #         return
 
 
 if __name__ == "__main__":
