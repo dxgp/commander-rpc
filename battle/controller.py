@@ -10,7 +10,7 @@ from messages_pb2_grpc import (
     DefenseNotificationStub,
 )
 from messages_pb2 import missile_details, Empty
-from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area,BoardEdges,T,DEFENSE_SYSTEM_PORT,CONTROLLER_IP,SOLDIER_IP,DEFENSE_NOTIFICATION_IP
+from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area,BoardEdges,T,DEFENSE_SYSTEM_PORT,CONTROLLER_IP,SOLDIER_IP,DEFENSE_NOTIFICATION_IP,MissileType
 import numpy as np
 import termtables as tt
 import random
@@ -69,7 +69,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
         server.stop(0)
     # RPCs
     def missile_notification(self, request, context):
-        if(self.battlefield.t>=T):
+        if(self.battlefield.t>=T or self.battlefield.current_commander==-1):
             alive_percentage = len(self.get_alive_soldiers())/SOLDIER_COUNT *100
             logging.debug(f"Time over. Currently {alive_percentage}% soldiers are alive.")
             if(alive_percentage>=50):
@@ -137,6 +137,8 @@ class ControllerNotificationService(ControllerNotificationServicer):
                 if self.battlefield.battle_grid[j][i] == " ":
                     self.battlefield.battle_grid[j][i] = "*"
                     print(f"x:{i},y:{j})")
+                elif(self.battlefield.battle_grid[j][i]!=" " and missile_type==MissileType.M1):
+                    self.battlefield.battle_grid[j][i] = "* " + self.battlefield.battle_grid[j][i]
 
         self.battlefield.print_battlefield()
 
@@ -146,23 +148,30 @@ class ControllerNotificationService(ControllerNotificationServicer):
         self.update_soldier_status()
         alive_soldiers = self.get_alive_soldiers()
         if self.battlefield.current_commander not in alive_soldiers:
-            new_commander_index = random.randint(0, len(alive_soldiers) - 1)
-            print(
-                f"The commander [Soldier {self.battlefield.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
-            )
-            logging.debug(
-                f"The commander [Soldier {self.battlefield.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
-            )
-            self.battlefield.current_commander = alive_soldiers[new_commander_index]
-            # now,we'll call the make commander RPC in the soldier to notify it that it has been elected as the new commander
-            stub = self.soldier_stubs.get(self.battlefield.current_commander)
-            stub.make_commander(Empty())
-            logging.debug(
-                f"The newly elected commander [{self.battlefield.current_commander}] has been notified of his new position."
-            )
-        print("NEW COMMANDER ELECTION COMPLETE.")
+            if(len(alive_soldiers)==0):
+                logging.debug("NO MORE SOLDIERS REMAINING. THE GAME IS FINISHED")
+                self.battlefield.current_commander= -1
+            else:
+                new_commander_index = random.randint(0, len(alive_soldiers) - 1)
+                print(
+                    f"The commander [Soldier {self.battlefield.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
+                )
+                logging.debug(
+                    f"The commander [Soldier {self.battlefield.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
+                )
+                self.battlefield.current_commander = alive_soldiers[new_commander_index]
+                # now,we'll call the make commander RPC in the soldier to notify it that it has been elected as the new commander
+                stub = self.soldier_stubs.get(self.battlefield.current_commander)
+                stub.make_commander(Empty())
+                logging.debug(
+                    f"The newly elected commander [{self.battlefield.current_commander}] has been notified of his new position."
+                )
+                print("NEW COMMANDER ELECTION COMPLETE.")
         # print("update_board called.")
-        print(alive_soldiers)
+        print("***SOLDIERS CURRENTLY ALIVE***:",alive_soldiers)
+        print("***SOLDIERS CURRENTLY DEAD***:",self.get_dead_soldiers())
+        logging.debug(f"Soldiers currently alive:{alive_soldiers}")
+        logging.debug(f"Soldiers currently dead:{self.get_dead_soldiers()}")
         for soldier in alive_soldiers:
             self.update_soldier_position(soldier)
         self.battlefield.print_battlefield()
@@ -197,6 +206,12 @@ class ControllerNotificationService(ControllerNotificationServicer):
             if status == True:
                 alive_soldiers.append(soldier)
         return alive_soldiers
+    def get_dead_soldiers(self):
+        dead_soldiers = []
+        for soldier, status in self.battlefield.all_soldiers.items():
+            if(status==False):
+                dead_soldiers.append(soldier)
+        return dead_soldiers
 
 
 def serve():

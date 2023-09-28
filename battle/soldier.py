@@ -65,7 +65,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         return position_details(x=self.soldier.x, y=self.soldier.y)
 
     def make_commander(self, request, context):
-        print(f"{self.soldier.number} IS NOW THE NEW COMMANDER BABY!")
+        print(f"{self.soldier.number} IS NOW THE NEW COMMANDER.")
         self.soldier.is_commander = True
         return Empty()
 
@@ -114,7 +114,6 @@ class SoldierNotificationService(SoldierNotificationServicer):
             # Sort distances
             distances = sorted(distances, key=lambda x: x[0])
             available_directions = self.get_available_directions_for_movement(impact_area)
-
             print(f"INITIAL DATA-> {self.soldier}")
             # Update soldier coordinates
             self.move_soldier(distances, available_directions, time_to_impact)
@@ -189,6 +188,9 @@ class SoldierNotificationService(SoldierNotificationServicer):
 
         # print(f"AVAILABLE MOVES: {available_moves}")
         print(f"\n_______________________ MOVEMENT LOG SOLDIER {self.soldier.number} _______________________")
+
+        if(len(available_moves)==0):
+            return
         print(f"SELECTING MOVE: {available_moves[0]}")
         direction = available_moves[0][1]
         d = available_moves[0][0]
@@ -222,8 +224,9 @@ class SoldierNotificationService(SoldierNotificationServicer):
                 dirs.append(Direction.BOTTOM_RIGHT)
 
             # Select random direction
-            r = random.randint(0, len(dirs) - 1)
-            selected_direction = dirs[r]
+            if(len(dirs)!=0):
+                r = random.randint(0, len(dirs) - 1)
+                selected_direction = dirs[r]
 
             if selected_direction == Direction.RIGHT:
                 # Move right

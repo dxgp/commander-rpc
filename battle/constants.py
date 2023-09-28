@@ -54,9 +54,9 @@ class Direction(Enum):
 
 class BoardEdges:
     TOP_Y = 0
-    BOTTOM_Y = 5
+    BOTTOM_Y = 9
     LEFT_X = 0
-    RIGHT_X = 5
+    RIGHT_X = 9
 
 
 class ImpactArea:
