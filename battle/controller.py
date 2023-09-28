@@ -99,12 +99,14 @@ class ControllerNotificationService(ControllerNotificationServicer):
             new_commander_index = random.randint(0,len(alive_soldiers))
             print(f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}")
             self.current_commander = alive_soldiers[new_commander_index]
+            #now,we'll call the make commander RPC in the soldier to notify it that it has been elected as the new commander
+            stub = self.soldier_stubs.get(self.current_commander)
+            
         print("NEW COMMANDER ELECTION COMPLETE.")
         #print("update_board called.")
         print(alive_soldiers)
         for soldier in alive_soldiers:
             self.update_soldier_position(soldier)
-
         self.battlefield.print_battlefield()
 
     # Polls a soldier for position and updates it in the battlefield
