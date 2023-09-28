@@ -9,25 +9,23 @@ from messages_pb2_grpc import (
 )
 from messages_pb2 import Empty, survival_response, position_details, missile_details
 
-from constants import Direction, BoardEdges, get_impact_area, CONTROLLER_PORT,SOLDIER_IP
+from constants import Direction, BoardEdges, get_impact_area, CONTROLLER_PORT, SOLDIER_IP
 import threading
 import time
-import _thread
+
 server = 0
+
 
 class Soldier:
     def __init__(self, soldier_number) -> None:
         self.x = random.randint(0, BoardEdges.RIGHT_X)
         self.y = random.randint(0, BoardEdges.BOTTOM_Y)
-        # self.x = 5
-        # self.y = 5
-        # self.speed = 2
         self.speed = random.randint(1, 5)
         self.is_alive = True
         self.number = soldier_number
         self.is_commander = False
         print(
-            f"Soldier initialied with arguments: (x:{self.x})|(y:{self.y})|(speed:{self.speed})|(sno: {self.number})"
+            f"Soldier initialized with arguments: (x:{self.x})|(y:{self.y})|(speed:{self.speed})|(sno: {self.number})"
         )
 
     def __str__(self) -> str:
@@ -43,6 +41,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         self.controller_stub = ControllerNotificationStub(controller_channel)
 
     # RPCs
+    # Receive missile notification from commander
     def notify_soldier(self, request, context):
         print(f"Soldier {self.soldier.number} received missile notification from commander! Calculating survival!")
         missile_x = request.x
@@ -56,46 +55,51 @@ class SoldierNotificationService(SoldierNotificationServicer):
         self.soldier.is_alive = survive
         return Empty()
 
+    # Return whether soldier is alive or not
     def soldier_status(self, request, context):
         print("Soldier status polled...")
         survival = survival_response(is_alive=self.soldier.is_alive)
         return survival
 
+    # Returns the coordinates of the soldier
     def soldier_position(self, request, context):
         return position_details(x=self.soldier.x, y=self.soldier.y)
 
+    # Set this soldier as the commander
     def make_commander(self, request, context):
         print(f"{self.soldier.number} IS NOW THE NEW COMMANDER.")
         self.soldier.is_commander = True
         return Empty()
 
+    # If the soldier is commander, it notifies the controller to broadcast missile details to all soldiers
     def notify_commander(self, request, context):
         request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
         self.controller_stub.notify_controller(request)
         print("** Called Controller.notify_controller **")
         return Empty()
 
-    def kill(self,request,context):
+    def kill(self, request, context):
         print("Killing soldier process...")
-        t = threading.Thread(target = self.kill_function)
+        t = threading.Thread(target=self.kill_function)
         t.setDaemon(False)
         t.start()
         return Empty()
-    
+
     def kill_function(self):
         time.sleep(0.1)
         server.stop(0)
+
     # Util methods
     def serve(self):
         global server
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
         add_SoldierNotificationServicer_to_server(self, server)
         server.add_insecure_port(f"{SOLDIER_IP}:{sys.argv[1]}")
-        # server.add_insecure_port(f"localhost:{60000}")
         server.start()
         print(f"SOLDIER {self.soldier.number} STARTED...")
         server.wait_for_termination()
 
+    # Returns whether the soldier will survive the missile impact
     def can_survive(self, missile_type, missile_x, missile_y, time_to_impact):
         impact_area = get_impact_area(missile_type, missile_x, missile_y)
         # If soldier is in the impact zone
@@ -141,11 +145,13 @@ class SoldierNotificationService(SoldierNotificationServicer):
         print("left_distance:", left_distance)
         return top_distance, bottom_distance, left_distance, right_distance
 
+    # Returns whether the soldier is inside the missile impact area
     def can_get_hit(self, impact_area):
         return (impact_area.left_x <= self.soldier.x <= impact_area.right_x) and (
             impact_area.top_y <= self.soldier.y <= impact_area.bottom_y
         )
 
+    # Checks the missile impact area and the board edges to return the available directions for soldier to move
     def get_available_directions_for_movement(self, impact_area):
         res = []
         top, bottom, left, right = False, False, False, False
@@ -186,7 +192,6 @@ class SoldierNotificationService(SoldierNotificationServicer):
             if d[1] in available_directions:
                 available_moves.append(d)
 
-        # print(f"AVAILABLE MOVES: {available_moves}")
         print(f"\n_______________________ MOVEMENT LOG SOLDIER {self.soldier.number} _______________________")
 
         if(len(available_moves)==0):
@@ -201,7 +206,6 @@ class SoldierNotificationService(SoldierNotificationServicer):
             return
 
         steps_remaining = max_possible_steps - d - 1
-        print(f"**** Steps rem: {steps_remaining}")
         if steps_remaining <= 0:
             noise = 0
         else:

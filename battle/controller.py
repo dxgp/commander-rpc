@@ -10,16 +10,30 @@ from messages_pb2_grpc import (
     DefenseNotificationStub,
 )
 from messages_pb2 import missile_details, Empty
-from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area,BoardEdges,T,DEFENSE_SYSTEM_PORT,CONTROLLER_IP,SOLDIER_IP,DEFENSE_NOTIFICATION_IP,MissileType
+from constants import (
+    SOLDIER_COUNT,
+    SOLDIER_BASE_PORT,
+    CONTROLLER_PORT,
+    get_impact_area,
+    BoardEdges,
+    T,
+    DEFENSE_SYSTEM_PORT,
+    CONTROLLER_IP,
+    SOLDIER_IP,
+    DEFENSE_NOTIFICATION_IP,
+    MissileType,
+)
 import numpy as np
 import termtables as tt
 import random
 import logging
 import sys
 from io import StringIO
-import _thread,threading,time
+import _thread, threading, time
 
 server = 0
+
+
 # Parent Class to store the current situation
 class BattleField:
     def __init__(self) -> None:
@@ -39,7 +53,7 @@ class BattleField:
         sys.stdout = old_stdout
 
     def init_new_grid(self):
-        self.battle_grid = np.empty((BoardEdges.RIGHT_X+1,BoardEdges.BOTTOM_Y+1), dtype=object)
+        self.battle_grid = np.empty((BoardEdges.RIGHT_X + 1, BoardEdges.BOTTOM_Y + 1), dtype=object)
         for i in range(self.battle_grid.shape[0]):
             for j in range(self.battle_grid.shape[1]):
                 self.battle_grid[i][j] = " "
@@ -67,36 +81,39 @@ class ControllerNotificationService(ControllerNotificationServicer):
     def kill_function(self):
         time.sleep(0.1)
         server.stop(0)
+
     # RPCs
     def missile_notification(self, request, context):
-        if(self.battlefield.t>=T or self.battlefield.current_commander==-1):
-            alive_percentage = len(self.get_alive_soldiers())/SOLDIER_COUNT *100
+        if self.battlefield.t >= T or self.battlefield.current_commander == -1:
+            alive_percentage = len(self.get_alive_soldiers()) / SOLDIER_COUNT * 100
             logging.debug(f"Time over. Currently {alive_percentage}% soldiers are alive.")
-            if(alive_percentage>=50):
+            if alive_percentage >= 50:
                 logging.debug("The game has been won by the soldiers.")
             else:
                 logging.debug("The game has been won by the enemies.")
             # TODO: Write the code to kill all processes here...
             # the current idea is to add a kill RPC to each service
-            for soldier_no,stub in self.soldier_stubs.items():
+            for soldier_no, stub in self.soldier_stubs.items():
                 logging.debug(f"[[Killing soldier {soldier_no}]]")
                 stub.kill(Empty())
             ds_channel = grpc.insecure_channel(f"{DEFENSE_NOTIFICATION_IP}:{DEFENSE_SYSTEM_PORT}")
             ds_stub = DefenseNotificationStub(ds_channel)
             ds_stub.kill(Empty())
             print("Now killing the controller")
-            t = threading.Thread(target = self.kill_function)
+            t = threading.Thread(target=self.kill_function)
             t.setDaemon(False)
             t.start()
             return Empty()
-            #_thread.interrupt_main()
+            # _thread.interrupt_main()
         else:
             print(
                 f"Controller received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
             )
 
-            #checking to see the game's ending condition
-            logging.debug(f"[Time = {self.battlefield.t}]Currently there are {len(self.get_alive_soldiers())/SOLDIER_COUNT *100}% soldiers alive.")
+            # checking to see the game's ending condition
+            logging.debug(
+                f"[Time = {self.battlefield.t}]Currently there are {len(self.get_alive_soldiers())/SOLDIER_COUNT *100}% soldiers alive."
+            )
             self.battlefield.t = self.battlefield.t + request.t
 
             logging.debug("Controller received missile notification.")
@@ -117,6 +134,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
         self.update_board_positions()
         return Empty()
 
+    # Util methods
     # Notify alive soldiers about incoming missile
     def notify_all_soldiers(self, missile_type, missile_x, missile_y, missile_t):
         alive_soldiers = self.get_alive_soldiers()
@@ -137,7 +155,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
                 if self.battlefield.battle_grid[j][i] == " ":
                     self.battlefield.battle_grid[j][i] = "*"
                     print(f"x:{i},y:{j})")
-                elif(self.battlefield.battle_grid[j][i]!=" " and missile_type==MissileType.M1):
+                elif self.battlefield.battle_grid[j][i] != " " and missile_type == MissileType.M1:
                     self.battlefield.battle_grid[j][i] = "* " + self.battlefield.battle_grid[j][i]
 
         self.battlefield.print_battlefield()
@@ -148,9 +166,9 @@ class ControllerNotificationService(ControllerNotificationServicer):
         self.update_soldier_status()
         alive_soldiers = self.get_alive_soldiers()
         if self.battlefield.current_commander not in alive_soldiers:
-            if(len(alive_soldiers)==0):
+            if len(alive_soldiers) == 0:
                 logging.debug("NO MORE SOLDIERS REMAINING. THE GAME IS FINISHED")
-                self.battlefield.current_commander= -1
+                self.battlefield.current_commander = -1
             else:
                 new_commander_index = random.randint(0, len(alive_soldiers) - 1)
                 print(
@@ -168,8 +186,8 @@ class ControllerNotificationService(ControllerNotificationServicer):
                 )
                 print("NEW COMMANDER ELECTION COMPLETE.")
         # print("update_board called.")
-        print("***SOLDIERS CURRENTLY ALIVE***:",alive_soldiers)
-        print("***SOLDIERS CURRENTLY DEAD***:",self.get_dead_soldiers())
+        print("***SOLDIERS CURRENTLY ALIVE***:", alive_soldiers)
+        print("***SOLDIERS CURRENTLY DEAD***:", self.get_dead_soldiers())
         logging.debug(f"Soldiers currently alive:{alive_soldiers}")
         logging.debug(f"Soldiers currently dead:{self.get_dead_soldiers()}")
         for soldier in alive_soldiers:
@@ -186,7 +204,6 @@ class ControllerNotificationService(ControllerNotificationServicer):
             self.battlefield.battle_grid[pos_reply.y][pos_reply.x] = str(soldier)
         else:
             self.battlefield.battle_grid[pos_reply.y][pos_reply.x] += f" {soldier}"
-        # print(f"Soldier {soldier}'s position polled at {pos_reply.x},{pos_reply.y}")
 
     # Polls soldiers for liveness and updates their status in the battlefield
     def update_soldier_status(self):
@@ -206,10 +223,11 @@ class ControllerNotificationService(ControllerNotificationServicer):
             if status == True:
                 alive_soldiers.append(soldier)
         return alive_soldiers
+
     def get_dead_soldiers(self):
         dead_soldiers = []
         for soldier, status in self.battlefield.all_soldiers.items():
-            if(status==False):
+            if status == False:
                 dead_soldiers.append(soldier)
         return dead_soldiers
 
