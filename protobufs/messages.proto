@@ -27,6 +27,7 @@ service SoldierNotification{
     rpc soldier_status(Empty) returns (survival_response);
     rpc soldier_position(Empty) returns (position_details);   
     rpc notify_commander(missile_details) returns (Empty);
+    rpc make_commander(Empty) returns (Empty);
 }
 
 // launch missile -> missile_notification (Controller) ->  notify_commander(Soldier) -> notify_controller (Controller) -> notify_all_soldiers (method in controller)

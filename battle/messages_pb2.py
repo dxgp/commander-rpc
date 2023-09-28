@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0emessages.proto\"H\n\x0fmissile_details\x12\x14\n\x0cmissile_type\x18\x01 \x01(\t\x12\t\n\x01x\x18\x02 \x01(\x05\x12\t\n\x01y\x18\x03 \x01(\x05\x12\t\n\x01t\x18\x04 \x01(\x05\"%\n\x11survival_response\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\"(\n\x10position_details\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"\x07\n\x05\x45mpty2A\n\x13\x44\x65\x66\x65nseNotification\x12*\n\x0elaunch_missile\x12\x10.missile_details\x1a\x06.Empty2y\n\x16\x43ontrollerNotification\x12\x30\n\x14missile_notification\x12\x10.missile_details\x1a\x06.Empty\x12-\n\x11notify_controller\x12\x10.missile_details\x1a\x06.Empty2\xcc\x01\n\x13SoldierNotification\x12*\n\x0enotify_soldier\x12\x10.missile_details\x1a\x06.Empty\x12,\n\x0esoldier_status\x12\x06.Empty\x1a\x12.survival_response\x12-\n\x10soldier_position\x12\x06.Empty\x1a\x11.position_details\x12,\n\x10notify_commander\x12\x10.missile_details\x1a\x06.Emptyb\x06proto3'
+  serialized_pb=b'\n\x0emessages.proto\"H\n\x0fmissile_details\x12\x14\n\x0cmissile_type\x18\x01 \x01(\t\x12\t\n\x01x\x18\x02 \x01(\x05\x12\t\n\x01y\x18\x03 \x01(\x05\x12\t\n\x01t\x18\x04 \x01(\x05\"%\n\x11survival_response\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\"(\n\x10position_details\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"\x07\n\x05\x45mpty2A\n\x13\x44\x65\x66\x65nseNotification\x12*\n\x0elaunch_missile\x12\x10.missile_details\x1a\x06.Empty2y\n\x16\x43ontrollerNotification\x12\x30\n\x14missile_notification\x12\x10.missile_details\x1a\x06.Empty\x12-\n\x11notify_controller\x12\x10.missile_details\x1a\x06.Empty2\xee\x01\n\x13SoldierNotification\x12*\n\x0enotify_soldier\x12\x10.missile_details\x1a\x06.Empty\x12,\n\x0esoldier_status\x12\x06.Empty\x1a\x12.survival_response\x12-\n\x10soldier_position\x12\x06.Empty\x1a\x11.position_details\x12,\n\x10notify_commander\x12\x10.missile_details\x1a\x06.Empty\x12 \n\x0emake_commander\x12\x06.Empty\x1a\x06.Emptyb\x06proto3'
 )
 
 
@@ -279,7 +279,7 @@ _SOLDIERNOTIFICATION = _descriptor.ServiceDescriptor(
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
   serialized_start=373,
-  serialized_end=577,
+  serialized_end=611,
   methods=[
   _descriptor.MethodDescriptor(
     name='notify_soldier',
@@ -317,6 +317,16 @@ _SOLDIERNOTIFICATION = _descriptor.ServiceDescriptor(
     index=3,
     containing_service=None,
     input_type=_MISSILE_DETAILS,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='make_commander',
+    full_name='SoldierNotification.make_commander',
+    index=4,
+    containing_service=None,
+    input_type=_EMPTY,
     output_type=_EMPTY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,

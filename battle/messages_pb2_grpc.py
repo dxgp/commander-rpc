@@ -189,6 +189,11 @@ class SoldierNotificationStub(object):
                 request_serializer=messages__pb2.missile_details.SerializeToString,
                 response_deserializer=messages__pb2.Empty.FromString,
                 )
+        self.make_commander = channel.unary_unary(
+                '/SoldierNotification/make_commander',
+                request_serializer=messages__pb2.Empty.SerializeToString,
+                response_deserializer=messages__pb2.Empty.FromString,
+                )
 
 
 class SoldierNotificationServicer(object):
@@ -218,6 +223,12 @@ class SoldierNotificationServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def make_commander(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SoldierNotificationServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -239,6 +250,11 @@ def add_SoldierNotificationServicer_to_server(servicer, server):
             'notify_commander': grpc.unary_unary_rpc_method_handler(
                     servicer.notify_commander,
                     request_deserializer=messages__pb2.missile_details.FromString,
+                    response_serializer=messages__pb2.Empty.SerializeToString,
+            ),
+            'make_commander': grpc.unary_unary_rpc_method_handler(
+                    servicer.make_commander,
+                    request_deserializer=messages__pb2.Empty.FromString,
                     response_serializer=messages__pb2.Empty.SerializeToString,
             ),
     }
@@ -315,6 +331,23 @@ class SoldierNotification(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/SoldierNotification/notify_commander',
             messages__pb2.missile_details.SerializeToString,
+            messages__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def make_commander(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/SoldierNotification/make_commander',
+            messages__pb2.Empty.SerializeToString,
             messages__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -9,12 +9,13 @@ from messages_pb2 import missile_details, Empty
 from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, get_impact_area
 import numpy as np
 import termtables as tt
+import random
 
 
 # Parent Class to store the current situation
 class BattleField:
     def __init__(self) -> None:
-        self.current_Controller = np.random.randint(0, SOLDIER_COUNT)
+        self.current_commander = np.random.randint(0, SOLDIER_COUNT)
         self.all_soldiers = dict([(i, True) for i in range(SOLDIER_COUNT)])
         self.init_new_grid()
 
@@ -47,15 +48,24 @@ class ControllerNotificationService(ControllerNotificationServicer):
 
         self.battlefield.print_battlefield()
 
+    #RPCs
     def missile_notification(self, request, context):
         print(
             f"Controller received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
         )
+        stub = self.soldier_stubs.get(self.current_commander)
+        request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
+        stub.notify_commander(request)
+        print("**Commander notified by controller**")
+        # update_commander_if_needed()
+        return Empty()
+    
+    def notify_controller(self,request,context):
+        print("notify_controller called. It will now notify all soldiers on behalf of the commander")
         self.notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
         # now, we'll have to poll the status of each soldier and update the battlefield accordingly
         self.print_impact_area(request.missile_type, request.x, request.y)
         self.update_board_positions()
-        # update_commander_if_needed()
         return Empty()
 
     # Notify alive soldiers about incoming missile
@@ -80,11 +90,17 @@ class ControllerNotificationService(ControllerNotificationServicer):
 
         self.battlefield.print_battlefield()
 
+    # Commander re-election also happens here
     def update_board_positions(self):
         self.battlefield.init_new_grid()
         self.update_soldier_status()
         alive_soldiers = self.get_alive_soldiers()
-        print("update_board called.")
+        if(self.current_commander not in alive_soldiers):
+            new_commander_index = random.randint(0,len(alive_soldiers))
+            print(f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}")
+            self.current_commander = alive_soldiers[new_commander_index]
+        print("NEW COMMANDER ELECTION COMPLETE.")
+        #print("update_board called.")
         print(alive_soldiers)
         for soldier in alive_soldiers:
             self.update_soldier_position(soldier)
