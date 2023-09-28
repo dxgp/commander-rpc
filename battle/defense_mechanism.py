@@ -2,7 +2,7 @@ import grpc
 from concurrent import futures
 from messages_pb2_grpc import (
     DefenseNotificationServicer,
-    CommanderNotificationStub,
+    ControllerNotificationStub,
     add_DefenseNotificationServicer_to_server,
 )
 from messages_pb2 import Empty, missile_details
@@ -13,11 +13,11 @@ class DefenseNotificationService(DefenseNotificationServicer):
         print("In launch missile******")
         # Call Commander notification service
         # Create commander stub object
-        commander_channel = grpc.insecure_channel("localhost:50001")
-        commander_stub = CommanderNotificationStub(commander_channel)
+        controller_channel = grpc.insecure_channel("localhost:50001")
+        controller_stub = ControllerNotificationStub(controller_channel)
         # Send missile details to commander
         comm_request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
-        commander_stub.missile_notification(comm_request)
+        controller_stub.missile_notification(comm_request)
         return Empty()
 
 

@@ -1,9 +1,9 @@
 import grpc
 from concurrent import futures
 from messages_pb2_grpc import (
-    CommanderNotificationServicer,
+    ControllerNotificationServicer,
     SoldierNotificationStub,
-    add_CommanderNotificationServicer_to_server,
+    add_ControllerNotificationServicer_to_server,
 )
 from messages_pb2 import missile_details, Empty
 from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, get_impact_area
@@ -14,7 +14,7 @@ import termtables as tt
 # Parent Class to store the current situation
 class BattleField:
     def __init__(self) -> None:
-        self.current_commander = np.random.randint(0, SOLDIER_COUNT)
+        self.current_Controller = np.random.randint(0, SOLDIER_COUNT)
         self.all_soldiers = dict([(i, True) for i in range(SOLDIER_COUNT)])
         self.init_new_grid()
 
@@ -28,7 +28,7 @@ class BattleField:
                 self.battle_grid[i][j] = " "
 
 
-class CommanderNotificationService(CommanderNotificationServicer):
+class ControllerNotificationService(ControllerNotificationServicer):
     def __init__(self) -> None:
         self.battlefield = BattleField()
 
@@ -49,7 +49,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
 
     def missile_notification(self, request, context):
         print(
-            f"Commander received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
+            f"Controller received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
         )
         self.notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
         # now, we'll have to poll the status of each soldier and update the battlefield accordingly
@@ -123,10 +123,10 @@ class CommanderNotificationService(CommanderNotificationServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=20))
-    add_CommanderNotificationServicer_to_server(CommanderNotificationService(), server)
+    add_ControllerNotificationServicer_to_server(ControllerNotificationService(), server)
     server.add_insecure_port("localhost:50001")
     server.start()
-    print("COMMANDER STARTED....")
+    print("Controller STARTED....")
     server.wait_for_termination()
 
 
