@@ -14,6 +14,7 @@ class Soldier:
         self.y = random.randint(0, 9)
         # self.x = 5
         # self.y = 5
+        # self.speed = 2
         self.speed = random.randint(1, 5)
         self.is_alive = True
         self.number = soldier_number
@@ -157,18 +158,27 @@ class SoldierNotificationService(SoldierNotificationServicer):
             if d[1] in available_directions:
                 available_moves.append(d)
 
-        print(f"AVAILABLE MOVES: {available_moves}")
+        # print(f"AVAILABLE MOVES: {available_moves}")
+        print(f"\n_______________________ MOVEMENT LOG SOLDIER {self.soldier.number} _______________________")
         print(f"SELECTING MOVE: {available_moves[0]}")
         direction = available_moves[0][1]
         d = available_moves[0][0]
-        noise = random.randint(0, self.soldier.speed - d)
+        steps_remaining = self.soldier.speed - d - 1
+        print(f"**** Steps rem: {steps_remaining}")
+        if steps_remaining <= 0:
+            noise = 0
+        else:
+            noise = random.randint(0, steps_remaining)
 
         move_right = min(self.soldier.x + d + 1 + noise, BoardEdges.RIGHT_X)
         move_top = max(self.soldier.y - d - 1 - noise, BoardEdges.TOP_Y)
         move_bottom = min(self.soldier.y + d + 1 + noise, BoardEdges.BOTTOM_Y)
         move_left = max(self.soldier.x - d - 1 - noise, BoardEdges.LEFT_X)
 
+        print(f"MOVE TOP: {move_top}, MOVE BOTTOM: {move_bottom}, MOVE RIGHT: {move_right}, MOVE LEFT: {move_left}")
+
         if direction == Direction.RIGHT:
+            print(f"*****IN RIGHT, d = {d}, speed = {self.soldier.speed}")
             if self.soldier.speed > d:
                 dirs = [Direction.RIGHT]
                 if Direction.TOP_RIGHT in available_directions:
@@ -197,6 +207,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
                     print("(BOTTOM RIGHT) CONDITION TRIGGERED")
 
         elif direction == Direction.LEFT:
+            print(f"*****IN LEFT, d = {d}, speed = {self.soldier.speed}")
             if self.soldier.speed > d:
                 dirs = [Direction.LEFT]
 
@@ -226,6 +237,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
                     print("(BOTTOM LEFT) CONDITION TRIGGERED")
 
         elif direction == Direction.TOP:
+            print(f"*****IN TOP, d = {d}, speed = {self.soldier.speed}")
             if self.soldier.speed > d:
                 dirs = [Direction.TOP]
 
@@ -255,6 +267,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
                     print("(TOP RIGHT) CONDITION TRIGGERED")
         else:
             if self.soldier.speed > d:
+                print(f"*****IN BOTTOM, d = {d}, speed = {self.soldier.speed}")
                 dirs = [Direction.BOTTOM]
 
                 if Direction.BOTTOM_LEFT in available_directions:
@@ -283,6 +296,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
                     print("(BOTTOM RIGHT) CONDITION TRIGGERED")
 
         print(f"***NEW POS***: ({self.soldier.x }, {self.soldier.y})")
+        print(f"______________________________________________\n")
 
 
 if __name__ == "__main__":
