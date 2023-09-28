@@ -90,23 +90,23 @@ class ControllerNotificationService(ControllerNotificationServicer):
             t.start()
             return Empty()
             #_thread.interrupt_main()
-            
-        print(
-            f"Controller received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
-        )
+        else:
+            print(
+                f"Controller received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
+            )
 
-        #checking to see the game's ending condition
-        logging.debug(f"[Time = {self.battlefield.t}]Currently there are {len(self.get_alive_soldiers())/SOLDIER_COUNT *100}% soldiers alive.")
-        self.battlefield.t = self.battlefield.t + request.t
+            #checking to see the game's ending condition
+            logging.debug(f"[Time = {self.battlefield.t}]Currently there are {len(self.get_alive_soldiers())/SOLDIER_COUNT *100}% soldiers alive.")
+            self.battlefield.t = self.battlefield.t + request.t
 
-        logging.debug("Controller received missile notification.")
-        stub = self.soldier_stubs.get(self.battlefield.current_commander)
-        request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
-        stub.notify_commander(request)
-        print("**Commander notified by controller**")
-        logging.debug("Controller notified the current commander.")
-        # update_commander_if_needed()
-        return Empty()
+            logging.debug("Controller received missile notification.")
+            stub = self.soldier_stubs.get(self.battlefield.current_commander)
+            request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
+            stub.notify_commander(request)
+            print("**Commander notified by controller**")
+            logging.debug("Controller notified the current commander.")
+            # update_commander_if_needed()
+            return Empty()
 
     def notify_controller(self, request, context):
         print("notify_controller called. It will now notify all soldiers on behalf of the commander")
