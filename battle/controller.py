@@ -10,7 +10,7 @@ from messages_pb2_grpc import (
     DefenseNotificationStub,
 )
 from messages_pb2 import missile_details, Empty
-from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area,BoardEdges,T,DEFENSE_SYSTEM_PORT
+from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area,BoardEdges,T,DEFENSE_SYSTEM_PORT,CONTROLLER_IP,SOLDIER_IP,DEFENSE_NOTIFICATION_IP
 import numpy as np
 import termtables as tt
 import random
@@ -52,7 +52,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
         # Create and store soldier stubs
         self.soldier_stubs = {}
         for soldier in self.battlefield.all_soldiers.keys():
-            channel = grpc.insecure_channel(f"localhost:{SOLDIER_BASE_PORT+soldier}")
+            channel = grpc.insecure_channel(f"{SOLDIER_IP}:{SOLDIER_BASE_PORT+soldier}")
             stub = SoldierNotificationStub(channel)
             self.soldier_stubs[soldier] = stub
 
@@ -81,7 +81,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
             for soldier_no,stub in self.soldier_stubs.items():
                 logging.debug(f"[[Killing soldier {soldier_no}]]")
                 stub.kill(Empty())
-            ds_channel = grpc.insecure_channel(f"localhost:{DEFENSE_SYSTEM_PORT}")
+            ds_channel = grpc.insecure_channel(f"{DEFENSE_NOTIFICATION_IP}:{DEFENSE_SYSTEM_PORT}")
             ds_stub = DefenseNotificationStub(ds_channel)
             ds_stub.kill(Empty())
             print("Now killing the controller")
@@ -203,7 +203,7 @@ def serve():
     global server
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=20))
     add_ControllerNotificationServicer_to_server(ControllerNotificationService(), server)
-    server.add_insecure_port(f"localhost:{CONTROLLER_PORT}")
+    server.add_insecure_port(f"{CONTROLLER_IP}:{CONTROLLER_PORT}")
     server.start()
     print("Controller STARTED....")
     server.wait_for_termination()

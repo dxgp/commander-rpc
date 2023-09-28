@@ -9,7 +9,7 @@ from messages_pb2_grpc import (
 )
 from messages_pb2 import Empty, survival_response, position_details, missile_details
 
-from constants import Direction, BoardEdges, get_impact_area, CONTROLLER_PORT
+from constants import Direction, BoardEdges, get_impact_area, CONTROLLER_PORT,SOLDIER_IP
 import threading
 import time
 import _thread
@@ -39,7 +39,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         soldier_number = int(sys.argv[1]) - 60000  # okay, need to pass a port number as the argument
         # soldier_number = 60000 - 60000
         self.soldier = Soldier(soldier_number)
-        controller_channel = grpc.insecure_channel(f"localhost:{CONTROLLER_PORT}")
+        controller_channel = grpc.insecure_channel(f"{SOLDIER_IP}:{CONTROLLER_PORT}")
         self.controller_stub = ControllerNotificationStub(controller_channel)
 
     # RPCs
@@ -90,7 +90,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         global server
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
         add_SoldierNotificationServicer_to_server(self, server)
-        server.add_insecure_port(f"localhost:{sys.argv[1]}")
+        server.add_insecure_port(f"{SOLDIER_IP}:{sys.argv[1]}")
         # server.add_insecure_port(f"localhost:{60000}")
         server.start()
         print(f"SOLDIER {self.soldier.number} STARTED...")

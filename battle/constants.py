@@ -9,6 +9,10 @@ DEFENSE_SYSTEM_PORT = 50000
 t = 1
 T = 10
 
+SOLDIER_IP = "localhost"
+DEFENSE_NOTIFICATION_IP = "localhost"
+CONTROLLER_IP = "localhost"
+
 class MissileType:
     M1 = "M1"
     M2 = "M2"

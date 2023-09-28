@@ -2,14 +2,14 @@ import grpc
 from messages_pb2 import missile_details
 from messages_pb2_grpc import DefenseNotificationStub
 import random
-from constants import MissileType,BoardEdges,t,T
+from constants import MissileType,BoardEdges,t,T,DEFENSE_NOTIFICATION_IP
 import time
 
-channel = grpc.insecure_channel("localhost:50000")
+
+channel = grpc.insecure_channel(f"{DEFENSE_NOTIFICATION_IP}:50000")
 stub = DefenseNotificationStub(channel)
 
 # Missile params
-
 
 starttime = time.time()
 local_t = 0
