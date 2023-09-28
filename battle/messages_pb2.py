@@ -3,9 +3,9 @@
 # source: messages.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
-from google.protobuf import descriptor_pool as _descriptor_pool
+from google.protobuf import message as _message
+from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf.internal import builder as _builder
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -13,26 +13,317 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0emessages.proto\"H\n\x0fmissile_details\x12\x14\n\x0cmissile_type\x18\x01 \x01(\t\x12\t\n\x01x\x18\x02 \x01(\x05\x12\t\n\x01y\x18\x03 \x01(\x05\x12\t\n\x01t\x18\x04 \x01(\x05\"%\n\x11survival_response\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\"(\n\x10position_details\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"\x07\n\x05\x45mpty2A\n\x13\x44\x65\x66\x65nseNotification\x12*\n\x0elaunch_missile\x12\x10.missile_details\x1a\x06.Empty2I\n\x15\x43ommanderNotification\x12\x30\n\x14missile_notification\x12\x10.missile_details\x1a\x06.Empty2\x9e\x01\n\x13SoldierNotification\x12*\n\x0enotify_soldier\x12\x10.missile_details\x1a\x06.Empty\x12,\n\x0esoldier_status\x12\x06.Empty\x1a\x12.survival_response\x12-\n\x10soldier_position\x12\x06.Empty\x1a\x11.position_detailsb\x06proto3')
+DESCRIPTOR = _descriptor.FileDescriptor(
+  name='messages.proto',
+  package='',
+  syntax='proto3',
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_pb=b'\n\x0emessages.proto\"H\n\x0fmissile_details\x12\x14\n\x0cmissile_type\x18\x01 \x01(\t\x12\t\n\x01x\x18\x02 \x01(\x05\x12\t\n\x01y\x18\x03 \x01(\x05\x12\t\n\x01t\x18\x04 \x01(\x05\"%\n\x11survival_response\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\"(\n\x10position_details\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"\x07\n\x05\x45mpty2A\n\x13\x44\x65\x66\x65nseNotification\x12*\n\x0elaunch_missile\x12\x10.missile_details\x1a\x06.Empty2y\n\x16\x43ontrollerNotification\x12\x30\n\x14missile_notification\x12\x10.missile_details\x1a\x06.Empty\x12-\n\x11notify_controller\x12\x10.missile_details\x1a\x06.Empty2\xcc\x01\n\x13SoldierNotification\x12*\n\x0enotify_soldier\x12\x10.missile_details\x1a\x06.Empty\x12,\n\x0esoldier_status\x12\x06.Empty\x1a\x12.survival_response\x12-\n\x10soldier_position\x12\x06.Empty\x1a\x11.position_details\x12,\n\x10notify_commander\x12\x10.missile_details\x1a\x06.Emptyb\x06proto3'
+)
 
-_globals = globals()
-_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'messages_pb2', _globals)
-if _descriptor._USE_C_DESCRIPTORS == False:
 
-  DESCRIPTOR._options = None
-  _globals['_MISSILE_DETAILS']._serialized_start=18
-  _globals['_MISSILE_DETAILS']._serialized_end=90
-  _globals['_SURVIVAL_RESPONSE']._serialized_start=92
-  _globals['_SURVIVAL_RESPONSE']._serialized_end=129
-  _globals['_POSITION_DETAILS']._serialized_start=131
-  _globals['_POSITION_DETAILS']._serialized_end=171
-  _globals['_EMPTY']._serialized_start=173
-  _globals['_EMPTY']._serialized_end=180
-  _globals['_DEFENSENOTIFICATION']._serialized_start=182
-  _globals['_DEFENSENOTIFICATION']._serialized_end=247
-  _globals['_COMMANDERNOTIFICATION']._serialized_start=249
-  _globals['_COMMANDERNOTIFICATION']._serialized_end=322
-  _globals['_SOLDIERNOTIFICATION']._serialized_start=325
-  _globals['_SOLDIERNOTIFICATION']._serialized_end=483
+
+
+_MISSILE_DETAILS = _descriptor.Descriptor(
+  name='missile_details',
+  full_name='missile_details',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='missile_type', full_name='missile_details.missile_type', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='x', full_name='missile_details.x', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='y', full_name='missile_details.y', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='t', full_name='missile_details.t', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=18,
+  serialized_end=90,
+)
+
+
+_SURVIVAL_RESPONSE = _descriptor.Descriptor(
+  name='survival_response',
+  full_name='survival_response',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='is_alive', full_name='survival_response.is_alive', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=92,
+  serialized_end=129,
+)
+
+
+_POSITION_DETAILS = _descriptor.Descriptor(
+  name='position_details',
+  full_name='position_details',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='x', full_name='position_details.x', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='y', full_name='position_details.y', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=131,
+  serialized_end=171,
+)
+
+
+_EMPTY = _descriptor.Descriptor(
+  name='Empty',
+  full_name='Empty',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=173,
+  serialized_end=180,
+)
+
+DESCRIPTOR.message_types_by_name['missile_details'] = _MISSILE_DETAILS
+DESCRIPTOR.message_types_by_name['survival_response'] = _SURVIVAL_RESPONSE
+DESCRIPTOR.message_types_by_name['position_details'] = _POSITION_DETAILS
+DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+missile_details = _reflection.GeneratedProtocolMessageType('missile_details', (_message.Message,), {
+  'DESCRIPTOR' : _MISSILE_DETAILS,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:missile_details)
+  })
+_sym_db.RegisterMessage(missile_details)
+
+survival_response = _reflection.GeneratedProtocolMessageType('survival_response', (_message.Message,), {
+  'DESCRIPTOR' : _SURVIVAL_RESPONSE,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:survival_response)
+  })
+_sym_db.RegisterMessage(survival_response)
+
+position_details = _reflection.GeneratedProtocolMessageType('position_details', (_message.Message,), {
+  'DESCRIPTOR' : _POSITION_DETAILS,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:position_details)
+  })
+_sym_db.RegisterMessage(position_details)
+
+Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
+  'DESCRIPTOR' : _EMPTY,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:Empty)
+  })
+_sym_db.RegisterMessage(Empty)
+
+
+
+_DEFENSENOTIFICATION = _descriptor.ServiceDescriptor(
+  name='DefenseNotification',
+  full_name='DefenseNotification',
+  file=DESCRIPTOR,
+  index=0,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=182,
+  serialized_end=247,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='launch_missile',
+    full_name='DefenseNotification.launch_missile',
+    index=0,
+    containing_service=None,
+    input_type=_MISSILE_DETAILS,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_DEFENSENOTIFICATION)
+
+DESCRIPTOR.services_by_name['DefenseNotification'] = _DEFENSENOTIFICATION
+
+
+_CONTROLLERNOTIFICATION = _descriptor.ServiceDescriptor(
+  name='ControllerNotification',
+  full_name='ControllerNotification',
+  file=DESCRIPTOR,
+  index=1,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=249,
+  serialized_end=370,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='missile_notification',
+    full_name='ControllerNotification.missile_notification',
+    index=0,
+    containing_service=None,
+    input_type=_MISSILE_DETAILS,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='notify_controller',
+    full_name='ControllerNotification.notify_controller',
+    index=1,
+    containing_service=None,
+    input_type=_MISSILE_DETAILS,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_CONTROLLERNOTIFICATION)
+
+DESCRIPTOR.services_by_name['ControllerNotification'] = _CONTROLLERNOTIFICATION
+
+
+_SOLDIERNOTIFICATION = _descriptor.ServiceDescriptor(
+  name='SoldierNotification',
+  full_name='SoldierNotification',
+  file=DESCRIPTOR,
+  index=2,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=373,
+  serialized_end=577,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='notify_soldier',
+    full_name='SoldierNotification.notify_soldier',
+    index=0,
+    containing_service=None,
+    input_type=_MISSILE_DETAILS,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='soldier_status',
+    full_name='SoldierNotification.soldier_status',
+    index=1,
+    containing_service=None,
+    input_type=_EMPTY,
+    output_type=_SURVIVAL_RESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='soldier_position',
+    full_name='SoldierNotification.soldier_position',
+    index=2,
+    containing_service=None,
+    input_type=_EMPTY,
+    output_type=_POSITION_DETAILS,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='notify_commander',
+    full_name='SoldierNotification.notify_commander',
+    index=3,
+    containing_service=None,
+    input_type=_MISSILE_DETAILS,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_SOLDIERNOTIFICATION)
+
+DESCRIPTOR.services_by_name['SoldierNotification'] = _SOLDIERNOTIFICATION
+
 # @@protoc_insertion_point(module_scope)
