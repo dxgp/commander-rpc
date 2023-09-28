@@ -9,11 +9,13 @@ from messages_pb2_grpc import (
     add_ControllerNotificationServicer_to_server,
 )
 from messages_pb2 import missile_details, Empty
-from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area
+from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area,BoardEdges
 import numpy as np
 import termtables as tt
 import random
 import logging
+import sys
+from io import StringIO
 
 
 # Parent Class to store the current situation
@@ -26,9 +28,15 @@ class BattleField:
 
     def print_battlefield(self):
         tt.print(self.battle_grid)
+        buffer = StringIO()
+        old_stdout = sys.stdout
+        sys.stdout = buffer
+        tt.print(self.battle_grid)
+        logging.debug(f"Current grid arrangement:\n{buffer.getvalue()}")
+        sys.stdout = old_stdout
 
     def init_new_grid(self):
-        self.battle_grid = np.empty((10, 10), dtype=object)
+        self.battle_grid = np.empty((BoardEdges.RIGHT_X+1,BoardEdges.BOTTOM_Y+1), dtype=object)
         for i in range(self.battle_grid.shape[0]):
             for j in range(self.battle_grid.shape[1]):
                 self.battle_grid[i][j] = " "
@@ -59,7 +67,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
             f"Controller received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
         )
         logging.debug("Controller received missile notification.")
-        stub = self.soldier_stubs.get(self.current_commander)
+        stub = self.soldier_stubs.get(self.battlefield.current_commander)
         request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
         stub.notify_commander(request)
         print("**Commander notified by controller**")
@@ -104,20 +112,20 @@ class ControllerNotificationService(ControllerNotificationServicer):
         self.battlefield.init_new_grid()
         self.update_soldier_status()
         alive_soldiers = self.get_alive_soldiers()
-        if self.current_commander not in alive_soldiers:
+        if self.battlefield.current_commander not in alive_soldiers:
             new_commander_index = random.randint(0, len(alive_soldiers))
             print(
-                f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
+                f"The commander [Soldier {self.battlefield.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
             )
             logging.debug(
-                f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
+                f"The commander [Soldier {self.battlefield.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
             )
-            self.current_commander = alive_soldiers[new_commander_index]
+            self.battlefield.current_commander = alive_soldiers[new_commander_index]
             # now,we'll call the make commander RPC in the soldier to notify it that it has been elected as the new commander
-            stub = self.soldier_stubs.get(self.current_commander)
+            stub = self.soldier_stubs.get(self.battlefield.current_commander)
             stub.make_commander(Empty())
             logging.debug(
-                f"The newly elected commander [{self.current_commander}] has been notified of his new position."
+                f"The newly elected commander [{self.battlefield.current_commander}] has been notified of his new position."
             )
         print("NEW COMMANDER ELECTION COMPLETE.")
         # print("update_board called.")
@@ -167,5 +175,5 @@ def serve():
 
 
 if __name__ == "__main__":
-    logging.basic_config(filename="output.log", filemode="a", format="%(asctime)s - %(message)s", level=logging.DEBUG)
+    logging.basicConfig(filename="output.log", filemode="a", format="%(asctime)s - %(message)s", level=logging.DEBUG)
     serve()

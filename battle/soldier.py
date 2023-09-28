@@ -14,8 +14,8 @@ from constants import Direction, BoardEdges, get_impact_area, CONTROLLER_PORT
 
 class Soldier:
     def __init__(self, soldier_number) -> None:
-        self.x = random.randint(0, 9)
-        self.y = random.randint(0, 9)
+        self.x = random.randint(0, BoardEdges.RIGHT_X)
+        self.y = random.randint(0, BoardEdges.BOTTOM_Y)
         # self.x = 5
         # self.y = 5
         # self.speed = 2
@@ -60,6 +60,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         return position_details(x=self.soldier.x, y=self.soldier.y)
 
     def make_commander(self, request, context):
+        print(f"{self.soldier.number} IS NOW THE NEW COMMANDER BABY!")
         self.soldier.is_commander = True
         return Empty()
 
@@ -67,6 +68,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
         self.controller_stub.notify_controller(request)
         print("** Called Controller.notify_controller **")
+        return Empty()
 
     # Util methods
     def serve(self):

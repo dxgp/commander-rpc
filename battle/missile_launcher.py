@@ -2,14 +2,14 @@ import grpc
 from messages_pb2 import missile_details
 from messages_pb2_grpc import DefenseNotificationStub
 import random
-from constants import MissileType
+from constants import MissileType,BoardEdges
 
 channel = grpc.insecure_channel("localhost:50000")
 stub = DefenseNotificationStub(channel)
 
 # Missile params
-x = random.randint(0, 9)
-y = random.randint(0, 9)
+x = random.randint(0, BoardEdges.RIGHT_X)
+y = random.randint(0, BoardEdges.BOTTOM_Y)
 # x, y = 5, 5
 missile_type = MissileType.M3
 
