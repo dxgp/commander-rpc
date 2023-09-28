@@ -6,10 +6,9 @@ from messages_pb2_grpc import (
     add_CommanderNotificationServicer_to_server,
 )
 from messages_pb2 import missile_details, Empty
-from constants import SOLDIER_COUNT,get_impact_area,ImpactArea
+from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, get_impact_area
 import numpy as np
 import termtables as tt
-
 
 
 # Parent Class to store the current situation
@@ -21,6 +20,7 @@ class BattleField:
 
     def print_battlefield(self):
         tt.print(self.battle_grid)
+
     def init_new_grid(self):
         self.battle_grid = np.empty((10, 10), dtype=object)
         for i in range(self.battle_grid.shape[0]):
@@ -35,7 +35,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
         # Create and store soldier stubs
         self.soldier_stubs = {}
         for soldier in self.battlefield.all_soldiers.keys():
-            channel = grpc.insecure_channel(f"localhost:{60000+soldier}")
+            channel = grpc.insecure_channel(f"localhost:{SOLDIER_BASE_PORT+soldier}")
             stub = SoldierNotificationStub(channel)
             self.soldier_stubs[soldier] = stub
 
@@ -53,7 +53,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
         )
         self.notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
         # now, we'll have to poll the status of each soldier and update the battlefield accordingly
-        self.print_impact_area(request.missile_type,request.x,request.y)
+        self.print_impact_area(request.missile_type, request.x, request.y)
         self.update_board_positions()
         # update_commander_if_needed()
         return Empty()
@@ -68,17 +68,18 @@ class CommanderNotificationService(CommanderNotificationServicer):
             print(f"Soldier {soldier} notified of incoming missile!")
         print(self.get_alive_soldiers())
 
-    def print_impact_area(self,missile_type, x,y):
+    def print_impact_area(self, missile_type, x, y):
         impact_area = get_impact_area(missile_type=missile_type, missile_x=x, missile_y=y)
         print(f"range({impact_area.left_x}, {impact_area.right_x+1})")
         print(f"range({impact_area.bottom_y},{impact_area.top_y+1})")
-        for i in range(impact_area.left_x, impact_area.right_x+1):
-            for j in range(impact_area.top_y,impact_area.bottom_y+1):
-                if(self.battlefield.battle_grid[j][i]==" "):
+        for i in range(impact_area.left_x, impact_area.right_x + 1):
+            for j in range(impact_area.top_y, impact_area.bottom_y + 1):
+                if self.battlefield.battle_grid[j][i] == " ":
                     self.battlefield.battle_grid[j][i] = "*"
                     print(f"x:{i},y:{j})")
-        
+
         self.battlefield.print_battlefield()
+
     def update_board_positions(self):
         self.battlefield.init_new_grid()
         self.update_soldier_status()
@@ -101,7 +102,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
         else:
             self.battlefield.battle_grid[pos_reply.y][pos_reply.x] += f" {soldier}"
 
-        #print(f"Soldier {soldier}'s position polled at {pos_reply.x},{pos_reply.y}")
+        # print(f"Soldier {soldier}'s position polled at {pos_reply.x},{pos_reply.y}")
 
     # Polls soldiers for liveness and updates their status in the battlefield
     def update_soldier_status(self):
@@ -115,7 +116,6 @@ class CommanderNotificationService(CommanderNotificationServicer):
     def get_alive_soldiers(self):
         alive_soldiers = []
         for soldier, status in self.battlefield.all_soldiers.items():
-
             if status == True:
                 alive_soldiers.append(soldier)
         return alive_soldiers
