@@ -1,366 +1,626 @@
-2023-09-28 22:29:28,666 - The initial commander has been decided as soldier 6
-2023-09-28 22:29:28,704 - Current grid arrangement:
-┌───────────┬───┬─────┐
-│           │   │ 0   │
-├───────────┼───┼─────┤
-│ 4 5 7 8 9 │   │ 1   │
-├───────────┼───┼─────┤
-│ 6         │   │ 2 3 │
-└───────────┴───┴─────┘
+2023-09-28 23:02:11,165 - The initial commander has been decided as soldier 37
+2023-09-28 23:02:11,303 - Current grid arrangement:
+┌────┬────┬────┬─────────┬───────┬───────┬───────┬──────┬───────┬───────┐
+│    │ 34 │    │ 15      │ 22 32 │ 35 49 │       │ 30   │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │    │ 46 │         │       │ 25    │ 21 39 │      │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │    │    │ 8       │       │       │ 37 47 │ 3 29 │ 41    │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │ 4  │    │         │       │       │ 6     │ 45   │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │ 42 │ 9  │         │       │ 14 18 │       │ 11   │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│ 40 │    │    │         │ 2     │       │       │      │ 19    │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │    │    │         │ 5 33  │ 27 38 │ 13 28 │      │ 48    │ 36    │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │    │    │ 7 17 20 │ 0     │       │       │      │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │ 26 │ 1  │         │       │       │       │      │ 31    │ 12 44 │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │    │ 10 │         │ 43    │ 24    │       │      │ 16 23 │       │
+└────┴────┴────┴─────────┴───────┴───────┴───────┴──────┴───────┴───────┘
 
-2023-09-28 22:29:30,615 - [Time = 0]Currently there are 100.0% soldiers alive.
-2023-09-28 22:29:30,615 - Controller received missile notification.
-2023-09-28 22:29:30,617 - Controller has been asked to broadcast the missile details to all soldiers.
-2023-09-28 22:29:30,617 - Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: list index out of range"
-	debug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"
->
-Traceback (most recent call last):
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_server.py", line 443, in _call_behavior
-    response_or_iterator = behavior(argument, context)
-  File "controller.py", line 114, in notify_controller
-    self.notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
-  File "controller.py", line 126, in notify_all_soldiers
-    empty_val = stub.notify_soldier(request)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 946, in __call__
-    return _end_unary_response_blocking(state, call, False, None)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 849, in _end_unary_response_blocking
-    raise _InactiveRpcError(state)
-grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: list index out of range"
-	debug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"
->
-2023-09-28 22:29:30,620 - Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: list index out of range"
-	debug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920370.620090000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: list index out of range"\n\tdebug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"\n>","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920370.620335000","description":"Error received from peer ipv6:[::1]:60006","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: list index out of range"\n\tdebug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"\n>"\n\tdebug_error_string = "{"created":"@1695920370.620090000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: list index out of range"\n\tdebug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"\n>","grpc_status":2}"\n>","grpc_status":2}"
->
-Traceback (most recent call last):
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_server.py", line 443, in _call_behavior
-    response_or_iterator = behavior(argument, context)
-  File "controller.py", line 105, in missile_notification
-    stub.notify_commander(request)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 946, in __call__
-    return _end_unary_response_blocking(state, call, False, None)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 849, in _end_unary_response_blocking
-    raise _InactiveRpcError(state)
-grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: list index out of range"
-	debug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920370.620090000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: list index out of range"\n\tdebug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"\n>","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920370.620335000","description":"Error received from peer ipv6:[::1]:60006","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: list index out of range"\n\tdebug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"\n>"\n\tdebug_error_string = "{"created":"@1695920370.620090000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: list index out of range"\n\tdebug_error_string = "{"created":"@1695920370.617556000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: list index out of range","grpc_status":2}"\n>","grpc_status":2}"\n>","grpc_status":2}"
->
-2023-09-28 22:34:41,827 - The initial commander has been decided as soldier 5
-2023-09-28 22:34:41,848 - Current grid arrangement:
-┌───────┬─────┬─────┐
-│       │ 1 4 │ 7   │
-├───────┼─────┼─────┤
-│       │ 5   │ 6 9 │
-├───────┼─────┼─────┤
-│ 0 2 8 │     │ 3   │
-└───────┴─────┴─────┘
+2023-09-28 23:02:13,134 - [Time = 0]Currently there are 100.0% soldiers alive.
+2023-09-28 23:02:13,134 - Controller received missile notification.
+2023-09-28 23:02:13,135 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:13,153 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:13,153 - Current grid arrangement:
+┌────┬────┬────┬─────────┬───────┬───────┬───────┬──────┬───────┬───────┐
+│    │ 34 │    │ 15      │ 22 32 │ 35 49 │       │ 30   │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │    │ 46 │         │       │ 25    │ 21 39 │      │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │    │    │ 8       │       │       │ 37 47 │ 3 29 │ 41    │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │ 4  │    │         │       │       │ 6     │ 45   │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │ 42 │ 9  │ *       │ *     │ 14 18 │       │ 11   │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│ 40 │ *  │ *  │ *       │ 2     │ *     │       │      │ 19    │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │ *  │ *  │ *       │ 5 33  │ 27 38 │ 13 28 │      │ 48    │ 36    │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │ *  │ *  │ 7 17 20 │ 0     │ *     │       │      │       │       │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │ 26 │ 1  │ *       │ *     │ *     │       │      │ 31    │ 12 44 │
+├────┼────┼────┼─────────┼───────┼───────┼───────┼──────┼───────┼───────┤
+│    │    │ 10 │         │ 43    │ 24    │       │      │ 16 23 │       │
+└────┴────┴────┴─────────┴───────┴───────┴───────┴──────┴───────┴───────┘
 
-2023-09-28 22:34:43,776 - [Time = 0]Currently there are 100.0% soldiers alive.
-2023-09-28 22:34:43,776 - Controller received missile notification.
-2023-09-28 22:34:43,778 - Controller has been asked to broadcast the missile details to all soldiers.
-2023-09-28 22:34:43,779 - Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: object of type 'bool' has no len()"
-	debug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"
->
-Traceback (most recent call last):
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_server.py", line 443, in _call_behavior
-    response_or_iterator = behavior(argument, context)
-  File "controller.py", line 114, in notify_controller
-    self.notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
-  File "controller.py", line 126, in notify_all_soldiers
-    empty_val = stub.notify_soldier(request)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 946, in __call__
-    return _end_unary_response_blocking(state, call, False, None)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 849, in _end_unary_response_blocking
-    raise _InactiveRpcError(state)
-grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: object of type 'bool' has no len()"
-	debug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"
->
-2023-09-28 22:34:43,781 - Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: object of type 'bool' has no len()"
-	debug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920683.781670000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920683.781923000","description":"Error received from peer ipv6:[::1]:60005","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>"\n\tdebug_error_string = "{"created":"@1695920683.781670000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>","grpc_status":2}"\n>","grpc_status":2}"
->
-Traceback (most recent call last):
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_server.py", line 443, in _call_behavior
-    response_or_iterator = behavior(argument, context)
-  File "controller.py", line 105, in missile_notification
-    stub.notify_commander(request)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 946, in __call__
-    return _end_unary_response_blocking(state, call, False, None)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 849, in _end_unary_response_blocking
-    raise _InactiveRpcError(state)
-grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: object of type 'bool' has no len()"
-	debug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920683.781670000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920683.781923000","description":"Error received from peer ipv6:[::1]:60005","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>"\n\tdebug_error_string = "{"created":"@1695920683.781670000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920683.778947000","description":"Error received from peer ipv6:[::1]:60001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>","grpc_status":2}"\n>","grpc_status":2}"
->
-2023-09-28 22:35:45,229 - The initial commander has been decided as soldier 0
-2023-09-28 22:35:45,261 - Current grid arrangement:
-┌───────┬───┬─────┐
-│ 1 4 6 │   │ 9   │
-├───────┼───┼─────┤
-│ 7     │   │ 2   │
-├───────┼───┼─────┤
-│ 5 8   │   │ 0 3 │
-└───────┴───┴─────┘
+2023-09-28 23:02:13,153 - Now polling all soldiers after the impact.
+2023-09-28 23:02:13,167 - Remaining alive soldiers: 49
+2023-09-28 23:02:13,167 - Soldiers currently alive:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+2023-09-28 23:02:13,167 - Soldiers currently dead:[17]
+2023-09-28 23:02:13,180 - Current grid arrangement:
+┌────┬──────┬────┬────┬───────┬───────┬─────────┬────────┬───────┬───────┐
+│    │ 34   │    │ 15 │ 22 32 │ 35 49 │         │ 30     │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │ 46 │    │       │ 25    │ 21 39   │        │ 18    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 9  │      │    │ 8  │       │       │ 37 47   │ 2 3 29 │ 41    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 42 │ 4    │    │    │       │       │ 6 14    │ 45     │ 38    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │ 33      │ 11     │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 40 │      │    │    │       │       │ 27      │        │ 19    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │ 5 13 28 │        │ 48    │ 36    │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │         │        │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │         │        │ 31    │ 12 44 │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 20 │ 1 26 │ 10 │    │ 0 43  │ 7 24  │         │        │ 16 23 │       │
+└────┴──────┴────┴────┴───────┴───────┴─────────┴────────┴───────┴───────┘
 
-2023-09-28 22:35:47,186 - [Time = 0]Currently there are 100.0% soldiers alive.
-2023-09-28 22:35:47,186 - Controller received missile notification.
-2023-09-28 22:35:47,187 - Controller has been asked to broadcast the missile details to all soldiers.
-2023-09-28 22:35:47,188 - Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: object of type 'bool' has no len()"
-	debug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"
->
-Traceback (most recent call last):
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_server.py", line 443, in _call_behavior
-    response_or_iterator = behavior(argument, context)
-  File "controller.py", line 114, in notify_controller
-    self.notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
-  File "controller.py", line 126, in notify_all_soldiers
-    empty_val = stub.notify_soldier(request)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 946, in __call__
-    return _end_unary_response_blocking(state, call, False, None)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 849, in _end_unary_response_blocking
-    raise _InactiveRpcError(state)
-grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: object of type 'bool' has no len()"
-	debug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"
->
-2023-09-28 22:35:47,190 - Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: object of type 'bool' has no len()"
-	debug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920747.190752000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920747.190902000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>"\n\tdebug_error_string = "{"created":"@1695920747.190752000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>","grpc_status":2}"\n>","grpc_status":2}"
->
-Traceback (most recent call last):
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_server.py", line 443, in _call_behavior
-    response_or_iterator = behavior(argument, context)
-  File "controller.py", line 105, in missile_notification
-    stub.notify_commander(request)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 946, in __call__
-    return _end_unary_response_blocking(state, call, False, None)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 849, in _end_unary_response_blocking
-    raise _InactiveRpcError(state)
-grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: object of type 'bool' has no len()"
-	debug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920747.190752000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920747.190902000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>"\n\tdebug_error_string = "{"created":"@1695920747.190752000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: object of type 'bool' has no len()"\n\tdebug_error_string = "{"created":"@1695920747.188287000","description":"Error received from peer ipv6:[::1]:60000","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: object of type 'bool' has no len()","grpc_status":2}"\n>","grpc_status":2}"\n>","grpc_status":2}"
->
-2023-09-28 22:36:23,647 - The initial commander has been decided as soldier 7
-2023-09-28 22:36:23,667 - Current grid arrangement:
-┌─────┬─────┬─────┐
-│     │ 4   │     │
-├─────┼─────┼─────┤
-│ 0 5 │ 2 7 │ 6 8 │
-├─────┼─────┼─────┤
-│ 9   │ 3   │ 1   │
-└─────┴─────┴─────┘
+2023-09-28 23:02:13,181 - Controller notified the current commander.
+2023-09-28 23:02:14,136 - [Time = 1]Currently there are 98.0% soldiers alive.
+2023-09-28 23:02:14,136 - Controller received missile notification.
+2023-09-28 23:02:14,137 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:14,166 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:14,167 - Current grid arrangement:
+┌────┬──────┬────┬────┬───────┬───────┬─────────┬────────┬───────┬───────┐
+│    │ 34   │    │ 15 │ 22 32 │ 35 49 │         │ 30     │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │ 46 │    │       │ 25    │ 21 39   │        │ 18    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 9  │      │    │ 8  │       │       │ 37 47   │ 2 3 29 │ 41    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 42 │ 4    │    │    │       │       │ 6 14    │ 45     │ 38    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │ 33      │ 11     │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 40 │      │    │    │       │       │ 27      │        │ 19    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │ 5 13 28 │        │ 48    │ 36    │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │         │ *      │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │         │        │ 31    │ 12 44 │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 20 │ 1 26 │ 10 │    │ 0 43  │ 7 24  │         │        │ 16 23 │       │
+└────┴──────┴────┴────┴───────┴───────┴─────────┴────────┴───────┴───────┘
 
-2023-09-28 22:36:25,603 - [Time = 0]Currently there are 100.0% soldiers alive.
-2023-09-28 22:36:25,603 - Controller received missile notification.
-2023-09-28 22:36:25,604 - Controller has been asked to broadcast the missile details to all soldiers.
-2023-09-28 22:36:25,608 - Controller finished broadcasting to all soldiers.
-2023-09-28 22:36:25,608 - Current grid arrangement:
-┌─────┬─────┬─────┐
-│ *   │ 4   │ *   │
-├─────┼─────┼─────┤
-│ 0 5 │ 2 7 │ 6 8 │
-├─────┼─────┼─────┤
-│ 9   │ 3   │ 1   │
-└─────┴─────┴─────┘
+2023-09-28 23:02:14,167 - Now polling all soldiers after the impact.
+2023-09-28 23:02:14,186 - Remaining alive soldiers: 49
+2023-09-28 23:02:14,186 - Soldiers currently alive:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+2023-09-28 23:02:14,186 - Soldiers currently dead:[17]
+2023-09-28 23:02:14,203 - Current grid arrangement:
+┌────┬──────┬────┬────┬───────┬───────┬─────────┬────────┬───────┬───────┐
+│    │ 34   │    │ 15 │ 22 32 │ 35 49 │         │ 30     │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │ 46 │    │       │ 25    │ 21 39   │        │ 18    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 9  │      │    │ 8  │       │       │ 37 47   │ 2 3 29 │ 41    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 42 │ 4    │    │    │       │       │ 6 14    │ 45     │ 38    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │ 33      │ 11     │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 40 │      │    │    │       │       │ 27      │        │ 19    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │ 5 13 28 │        │ 48    │ 36    │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │         │        │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │         │        │ 31    │ 12 44 │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 20 │ 1 26 │ 10 │    │ 0 43  │ 7 24  │         │        │ 16 23 │       │
+└────┴──────┴────┴────┴───────┴───────┴─────────┴────────┴───────┴───────┘
 
-2023-09-28 22:36:25,608 - Now polling all soldiers after the impact.
-2023-09-28 22:36:25,611 - Remaining alive soldiers: 0
-2023-09-28 22:36:25,611 - Exception calling application: empty range for randrange() (0, 0, 0)
-Traceback (most recent call last):
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_server.py", line 443, in _call_behavior
-    response_or_iterator = behavior(argument, context)
-  File "controller.py", line 117, in notify_controller
-    self.update_board_positions()
-  File "controller.py", line 151, in update_board_positions
-    new_commander_index = random.randint(0, len(alive_soldiers) - 1)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/random.py", line 248, in randint
-    return self.randrange(a, b+1)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/random.py", line 226, in randrange
-    raise ValueError("empty range for randrange() (%d, %d, %d)" % (istart, istop, width))
-ValueError: empty range for randrange() (0, 0, 0)
-2023-09-28 22:36:25,613 - Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: empty range for randrange() (0, 0, 0)"
-	debug_error_string = "{"created":"@1695920785.613388000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: empty range for randrange() (0, 0, 0)","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920785.613550000","description":"Error received from peer ipv6:[::1]:60007","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: empty range for randrange() (0, 0, 0)"\n\tdebug_error_string = "{"created":"@1695920785.613388000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: empty range for randrange() (0, 0, 0)","grpc_status":2}"\n>","grpc_status":2}"
->
-Traceback (most recent call last):
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_server.py", line 443, in _call_behavior
-    response_or_iterator = behavior(argument, context)
-  File "controller.py", line 105, in missile_notification
-    stub.notify_commander(request)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 946, in __call__
-    return _end_unary_response_blocking(state, call, False, None)
-  File "/opt/homebrew/Caskroom/miniconda/base/envs/proto/lib/python3.8/site-packages/grpc/_channel.py", line 849, in _end_unary_response_blocking
-    raise _InactiveRpcError(state)
-grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNKNOWN
-	details = "Exception calling application: empty range for randrange() (0, 0, 0)"
-	debug_error_string = "{"created":"@1695920785.613388000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: empty range for randrange() (0, 0, 0)","grpc_status":2}"
->"
-	debug_error_string = "{"created":"@1695920785.613550000","description":"Error received from peer ipv6:[::1]:60007","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: <_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.UNKNOWN\n\tdetails = "Exception calling application: empty range for randrange() (0, 0, 0)"\n\tdebug_error_string = "{"created":"@1695920785.613388000","description":"Error received from peer ipv6:[::1]:50001","file":"src/core/lib/surface/call.cc","file_line":1064,"grpc_message":"Exception calling application: empty range for randrange() (0, 0, 0)","grpc_status":2}"\n>","grpc_status":2}"
->
-2023-09-28 22:42:05,906 - The initial commander has been decided as soldier 1
-2023-09-28 22:42:05,940 - Current grid arrangement:
-┌───┬───┬───────┐
-│ 2 │   │ 0 3 5 │
-├───┼───┼───────┤
-│ 9 │ 8 │ 4     │
-├───┼───┼───────┤
-│   │   │ 1 6 7 │
-└───┴───┴───────┘
+2023-09-28 23:02:14,203 - Controller notified the current commander.
+2023-09-28 23:02:15,138 - [Time = 2]Currently there are 98.0% soldiers alive.
+2023-09-28 23:02:15,138 - Controller received missile notification.
+2023-09-28 23:02:15,139 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:15,169 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:15,170 - Current grid arrangement:
+┌────┬──────┬────┬────┬───────┬───────┬─────────┬────────┬───────┬───────┐
+│    │ 34   │    │ 15 │ 22 32 │ 35 49 │ *       │ 30     │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │ 46 │    │ *     │ 25    │ 21 39   │        │ 18    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 9  │      │    │ 8  │ *     │ *     │ 37 47   │ 2 3 29 │ 41    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 42 │ 4    │    │    │       │       │ 6 14    │ 45     │ 38    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │ 33      │ 11     │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 40 │      │    │    │       │       │ 27      │        │ 19    │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │ 5 13 28 │        │ 48    │ 36    │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │         │        │       │       │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│    │      │    │    │       │       │         │        │ 31    │ 12 44 │
+├────┼──────┼────┼────┼───────┼───────┼─────────┼────────┼───────┼───────┤
+│ 20 │ 1 26 │ 10 │    │ 0 43  │ 7 24  │         │        │ 16 23 │       │
+└────┴──────┴────┴────┴───────┴───────┴─────────┴────────┴───────┴───────┘
 
-2023-09-28 22:42:07,852 - [Time = 0]Currently there are 100.0% soldiers alive.
-2023-09-28 22:42:07,852 - Controller received missile notification.
-2023-09-28 22:42:07,853 - Controller has been asked to broadcast the missile details to all soldiers.
-2023-09-28 22:42:07,857 - Controller finished broadcasting to all soldiers.
-2023-09-28 22:42:07,858 - Current grid arrangement:
-┌───┬───┬───────┐
-│ 2 │ * │ 0 3 5 │
-├───┼───┼───────┤
-│ 9 │ 8 │ 4     │
-├───┼───┼───────┤
-│ * │ * │ 1 6 7 │
-└───┴───┴───────┘
+2023-09-28 23:02:15,170 - Now polling all soldiers after the impact.
+2023-09-28 23:02:15,189 - Remaining alive soldiers: 48
+2023-09-28 23:02:15,189 - Soldiers currently alive:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+2023-09-28 23:02:15,189 - Soldiers currently dead:[17, 49]
+2023-09-28 23:02:15,206 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬─────────┬───────────┬───────┬───────┐
+│    │ 34   │    │ 15    │      │      │         │ 30        │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │ 46 │ 22 32 │      │      │         │ 21        │ 18    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 9  │      │    │ 8 35  │      │      │         │ 2 3 29 39 │ 41    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 42 │ 4    │    │       │      │      │ 6 14    │ 25 37 45  │ 38    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │ 47   │      │ 33      │ 11        │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 40 │      │    │       │      │      │ 27      │           │ 19    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │ 5 13 28 │           │ 48    │ 36    │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │         │           │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │         │           │ 31    │ 12 44 │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │         │           │ 16 23 │       │
+└────┴──────┴────┴───────┴──────┴──────┴─────────┴───────────┴───────┴───────┘
 
-2023-09-28 22:42:07,858 - Now polling all soldiers after the impact.
-2023-09-28 22:42:07,860 - Remaining alive soldiers: 0
-2023-09-28 22:42:07,860 - NO MORE SOLDIERS REMAINING. THE GAME IS FINISHED
-2023-09-28 22:42:07,860 - Soldiers currently alive:[]
-2023-09-28 22:42:07,860 - Soldiers currently dead:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-2023-09-28 22:42:07,860 - Current grid arrangement:
-┌───┬───┬───┐
-│   │   │   │
-├───┼───┼───┤
-│   │   │   │
-├───┼───┼───┤
-│   │   │   │
-└───┴───┴───┘
+2023-09-28 23:02:15,206 - Controller notified the current commander.
+2023-09-28 23:02:16,137 - [Time = 3]Currently there are 96.0% soldiers alive.
+2023-09-28 23:02:16,138 - Controller received missile notification.
+2023-09-28 23:02:16,139 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:16,167 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:16,168 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬─────────┬───────────┬───────┬───────┐
+│    │ 34   │    │ 15    │      │      │         │ 30        │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │ 46 │ 22 32 │      │      │         │ 21        │ 18    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 9  │      │    │ 8 35  │      │      │         │ 2 3 29 39 │ 41    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 42 │ 4    │    │       │      │      │ 6 14    │ 25 37 45  │ 38    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ *  │      │    │       │ 47   │      │ 33      │ 11        │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 40 │      │    │       │      │      │ 27      │           │ 19    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │ 5 13 28 │           │ 48    │ 36    │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │         │           │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │         │           │ 31    │ 12 44 │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │         │           │ 16 23 │       │
+└────┴──────┴────┴───────┴──────┴──────┴─────────┴───────────┴───────┴───────┘
 
-2023-09-28 22:42:07,861 - Controller notified the current commander.
-2023-09-28 22:42:08,856 - Time over. Currently 0.0% soldiers are alive.
-2023-09-28 22:42:08,856 - The game has been won by the enemies.
-2023-09-28 22:42:08,856 - [[Killing soldier 0]]
-2023-09-28 22:42:08,857 - [[Killing soldier 1]]
-2023-09-28 22:42:08,858 - [[Killing soldier 2]]
-2023-09-28 22:42:08,859 - [[Killing soldier 3]]
-2023-09-28 22:42:08,861 - [[Killing soldier 4]]
-2023-09-28 22:42:08,862 - [[Killing soldier 5]]
-2023-09-28 22:42:08,862 - [[Killing soldier 6]]
-2023-09-28 22:42:08,863 - [[Killing soldier 7]]
-2023-09-28 22:42:08,864 - [[Killing soldier 8]]
-2023-09-28 22:42:08,865 - [[Killing soldier 9]]
-2023-09-28 22:43:16,856 - The initial commander has been decided as soldier 0
-2023-09-28 22:43:16,903 - Current grid arrangement:
-┌─────────┬─────┐
-│ 0 3 7 8 │ 5   │
-├─────────┼─────┤
-│ 1 2 6   │ 4 9 │
-└─────────┴─────┘
+2023-09-28 23:02:16,168 - Now polling all soldiers after the impact.
+2023-09-28 23:02:16,187 - Remaining alive soldiers: 48
+2023-09-28 23:02:16,187 - Soldiers currently alive:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+2023-09-28 23:02:16,187 - Soldiers currently dead:[17, 49]
+2023-09-28 23:02:16,203 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬─────────┬───────────┬───────┬───────┐
+│    │ 34   │    │ 15    │      │      │         │ 30        │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │ 46 │ 22 32 │      │      │         │ 21        │ 18    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 9  │      │    │ 8 35  │      │      │         │ 2 3 29 39 │ 41    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 42 │ 4    │    │       │      │      │ 6 14    │ 25 37 45  │ 38    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │ 47   │      │ 33      │ 11        │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 40 │      │    │       │      │      │ 27      │           │ 19    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │ 5 13 28 │           │ 48    │ 36    │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │         │           │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │         │           │ 31    │ 12 44 │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │         │           │ 16 23 │       │
+└────┴──────┴────┴───────┴──────┴──────┴─────────┴───────────┴───────┴───────┘
 
-2023-09-28 22:43:18,812 - [Time = 0]Currently there are 100.0% soldiers alive.
-2023-09-28 22:43:18,813 - Controller received missile notification.
-2023-09-28 22:43:18,814 - Controller has been asked to broadcast the missile details to all soldiers.
-2023-09-28 22:43:18,818 - Controller finished broadcasting to all soldiers.
-2023-09-28 22:43:18,818 - Current grid arrangement:
-┌─────────┬─────┐
-│ 0 3 7 8 │ 5   │
-├─────────┼─────┤
-│ 1 2 6   │ 4 9 │
-└─────────┴─────┘
+2023-09-28 23:02:16,203 - Controller notified the current commander.
+2023-09-28 23:02:17,138 - [Time = 4]Currently there are 96.0% soldiers alive.
+2023-09-28 23:02:17,138 - Controller received missile notification.
+2023-09-28 23:02:17,139 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:17,168 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:17,169 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬─────────┬───────────┬───────┬───────┐
+│    │ 34   │    │ 15    │      │      │         │ 30        │       │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │ 46 │ 22 32 │      │      │         │ 21        │ 18    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 9  │      │    │ 8 35  │      │      │         │ 2 3 29 39 │ 41    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 42 │ 4    │    │       │      │      │ 6 14    │ 25 37 45  │ 38    │       │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │ 47   │      │ 33      │ 11        │ *     │ *     │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 40 │      │    │       │      │      │ 27      │ *         │ 19    │ *     │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │ 5 13 28 │ *         │ 48    │ 36    │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │ *       │ *         │ *     │ *     │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│    │      │    │       │      │      │ *       │ *         │ 31    │ 12 44 │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───────┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │ *       │ *         │ 16 23 │ *     │
+└────┴──────┴────┴───────┴──────┴──────┴─────────┴───────────┴───────┴───────┘
 
-2023-09-28 22:43:18,818 - Now polling all soldiers after the impact.
-2023-09-28 22:43:18,821 - Remaining alive soldiers: 0
-2023-09-28 22:43:18,821 - NO MORE SOLDIERS REMAINING. THE GAME IS FINISHED
-2023-09-28 22:43:18,821 - Soldiers currently alive:[]
-2023-09-28 22:43:18,821 - Soldiers currently dead:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-2023-09-28 22:43:18,821 - Current grid arrangement:
-┌───┬───┐
-│   │   │
-├───┼───┤
-│   │   │
-└───┴───┘
+2023-09-28 23:02:17,169 - Now polling all soldiers after the impact.
+2023-09-28 23:02:17,188 - Remaining alive soldiers: 44
+2023-09-28 23:02:17,188 - Soldiers currently alive:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+2023-09-28 23:02:17,188 - Soldiers currently dead:[12, 17, 23, 31, 36, 49]
+2023-09-28 23:02:17,203 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬──────┬───────────┬───────┬───┐
+│    │ 34   │    │ 11 15 │      │      │      │ 30        │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │ 46 │ 22 32 │      │      │      │ 21        │ 18 48 │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 9  │      │    │ 8 35  │ 33   │ 19   │      │ 2 3 29 39 │ 41    │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 42 │ 4    │    │       │      │      │ 6 14 │ 25 37 45  │ 38    │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │ 5 47 │ 27   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 40 │      │    │       │ 16   │      │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │ 28   │ 13   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │      │      │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │      │ 44   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │      │           │       │   │
+└────┴──────┴────┴───────┴──────┴──────┴──────┴───────────┴───────┴───┘
 
-2023-09-28 22:43:18,821 - Controller notified the current commander.
-2023-09-28 22:43:19,818 - Time over. Currently 0.0% soldiers are alive.
-2023-09-28 22:43:19,818 - The game has been won by the enemies.
-2023-09-28 22:43:19,818 - [[Killing soldier 0]]
-2023-09-28 22:43:19,819 - [[Killing soldier 1]]
-2023-09-28 22:43:19,820 - [[Killing soldier 2]]
-2023-09-28 22:43:19,821 - [[Killing soldier 3]]
-2023-09-28 22:43:19,822 - [[Killing soldier 4]]
-2023-09-28 22:43:19,823 - [[Killing soldier 5]]
-2023-09-28 22:43:19,824 - [[Killing soldier 6]]
-2023-09-28 22:43:19,825 - [[Killing soldier 7]]
-2023-09-28 22:43:19,825 - [[Killing soldier 8]]
-2023-09-28 22:43:19,826 - [[Killing soldier 9]]
+2023-09-28 23:02:17,203 - Controller notified the current commander.
+2023-09-28 23:02:18,137 - [Time = 5]Currently there are 88.0% soldiers alive.
+2023-09-28 23:02:18,137 - Controller received missile notification.
+2023-09-28 23:02:18,138 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:18,164 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:18,165 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬──────┬───────────┬───────┬───┐
+│    │ 34   │    │ 11 15 │      │      │      │ 30        │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │ 46 │ 22 32 │      │      │      │ 21        │ 18 48 │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 9  │      │    │ 8 35  │ 33   │ 19   │      │ 2 3 29 39 │ 41    │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 42 │ 4    │    │       │      │      │ 6 14 │ 25 37 45  │ 38    │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │ 5 47 │ 27   │      │           │ *     │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 40 │      │    │       │ 16   │      │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │ 28   │ 13   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │      │      │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │      │ 44   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │      │           │       │   │
+└────┴──────┴────┴───────┴──────┴──────┴──────┴───────────┴───────┴───┘
+
+2023-09-28 23:02:18,166 - Now polling all soldiers after the impact.
+2023-09-28 23:02:18,185 - Remaining alive soldiers: 44
+2023-09-28 23:02:18,186 - Soldiers currently alive:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+2023-09-28 23:02:18,186 - Soldiers currently dead:[12, 17, 23, 31, 36, 49]
+2023-09-28 23:02:18,202 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬──────┬───────────┬───────┬───┐
+│    │ 34   │    │ 11 15 │      │      │      │ 30        │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │ 46 │ 22 32 │      │      │      │ 21        │ 18 48 │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 9  │      │    │ 8 35  │ 33   │ 19   │      │ 2 3 29 39 │ 41    │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 42 │ 4    │    │       │      │      │ 6 14 │ 25 37 45  │ 38    │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │ 5 47 │ 27   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 40 │      │    │       │ 16   │      │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │ 28   │ 13   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │      │      │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │      │ 44   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │      │           │       │   │
+└────┴──────┴────┴───────┴──────┴──────┴──────┴───────────┴───────┴───┘
+
+2023-09-28 23:02:18,202 - Controller notified the current commander.
+2023-09-28 23:02:19,137 - [Time = 6]Currently there are 88.0% soldiers alive.
+2023-09-28 23:02:19,137 - Controller received missile notification.
+2023-09-28 23:02:19,138 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:19,164 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:19,165 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬──────┬───────────┬───────┬───┐
+│    │ 34   │    │ 11 15 │      │      │      │ 30        │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │ 46 │ 22 32 │      │      │      │ 21        │ 18 48 │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 9  │      │    │ 8 35  │ 33   │ 19   │      │ 2 3 29 39 │ 41    │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 42 │ 4    │    │       │      │      │ 6 14 │ 25 37 45  │ 38    │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │ 5 47 │ * 27 │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 40 │      │    │       │ 16   │      │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │ 28   │ 13   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │      │      │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│    │      │    │       │      │ 44   │      │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼──────┼───────────┼───────┼───┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │      │           │       │   │
+└────┴──────┴────┴───────┴──────┴──────┴──────┴───────────┴───────┴───┘
+
+2023-09-28 23:02:19,165 - Now polling all soldiers after the impact.
+2023-09-28 23:02:19,184 - Remaining alive soldiers: 44
+2023-09-28 23:02:19,185 - Soldiers currently alive:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+2023-09-28 23:02:19,185 - Soldiers currently dead:[12, 17, 23, 31, 36, 49]
+2023-09-28 23:02:19,199 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬─────────┬───────────┬───────┬───┐
+│    │ 34   │    │ 11 15 │      │      │         │ 30        │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │ 46 │ 22 32 │      │      │         │ 21        │ 18 48 │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 9  │      │    │ 8 35  │ 33   │ 19   │         │ 2 3 29 39 │ 41    │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 42 │ 4    │    │       │      │      │ 6 14 27 │ 25 37 45  │ 38    │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │    │       │ 5 47 │      │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 40 │      │    │       │ 16   │      │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │    │       │ 28   │ 13   │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │    │       │      │      │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │    │       │      │ 44   │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │         │           │       │   │
+└────┴──────┴────┴───────┴──────┴──────┴─────────┴───────────┴───────┴───┘
+
+2023-09-28 23:02:19,200 - Controller notified the current commander.
+2023-09-28 23:02:20,137 - [Time = 7]Currently there are 88.0% soldiers alive.
+2023-09-28 23:02:20,137 - Controller received missile notification.
+2023-09-28 23:02:20,138 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:20,165 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:20,166 - Current grid arrangement:
+┌────┬──────┬────┬───────┬──────┬──────┬─────────┬───────────┬───────┬───┐
+│    │ 34   │    │ 11 15 │ *    │ *    │         │ 30        │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │ 46 │ 22 32 │ *    │ *    │         │ 21        │ 18 48 │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 9  │      │    │ 8 35  │ 33   │ 19   │         │ 2 3 29 39 │ 41    │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 42 │ 4    │    │       │      │      │ 6 14 27 │ 25 37 45  │ 38    │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │    │       │ 5 47 │      │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 40 │      │    │       │ 16   │      │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │    │       │ 28   │ 13   │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │    │       │      │      │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │    │       │      │ 44   │         │           │       │   │
+├────┼──────┼────┼───────┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 20 │ 1 26 │ 10 │       │ 0 43 │ 7 24 │         │           │       │   │
+└────┴──────┴────┴───────┴──────┴──────┴─────────┴───────────┴───────┴───┘
+
+2023-09-28 23:02:20,166 - Now polling all soldiers after the impact.
+2023-09-28 23:02:20,186 - Remaining alive soldiers: 44
+2023-09-28 23:02:20,186 - Soldiers currently alive:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+2023-09-28 23:02:20,186 - Soldiers currently dead:[12, 17, 23, 31, 36, 49]
+2023-09-28 23:02:20,202 - Current grid arrangement:
+┌────┬──────┬───────┬───┬──────┬──────┬─────────┬───────────┬───────┬───┐
+│    │ 34   │       │   │      │      │         │ 30        │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │ 32   │ 15 46 │   │      │      │         │ 21        │ 18 48 │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 9  │      │ 22    │   │      │      │         │ 2 3 29 39 │ 41    │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 42 │ 4    │       │   │ 8    │ 33   │ 6 14 27 │ 25 37 45  │ 38    │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 11 │      │       │   │ 5 47 │      │         │ 19        │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 40 │      │       │   │ 16   │      │         │           │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 35 │      │       │   │ 28   │ 13   │         │           │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │       │   │      │      │         │           │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │       │   │      │ 44   │         │           │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 20 │ 1 26 │ 10    │   │ 0 43 │ 7 24 │         │           │       │   │
+└────┴──────┴───────┴───┴──────┴──────┴─────────┴───────────┴───────┴───┘
+
+2023-09-28 23:02:20,203 - Controller notified the current commander.
+2023-09-28 23:02:21,137 - [Time = 8]Currently there are 88.0% soldiers alive.
+2023-09-28 23:02:21,137 - Controller received missile notification.
+2023-09-28 23:02:21,139 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:21,166 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:21,168 - Current grid arrangement:
+┌────┬──────┬───────┬───┬──────┬──────┬─────────┬───────────┬───────┬───┐
+│    │ 34   │       │   │      │      │         │ 30        │ *     │ * │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │ 32   │ 15 46 │   │      │      │         │ 21        │ 18 48 │ * │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 9  │      │ 22    │   │      │      │         │ 2 3 29 39 │ 41    │ * │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 42 │ 4    │       │   │ 8    │ 33   │ 6 14 27 │ 25 37 45  │ 38    │ * │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 11 │      │       │   │ 5 47 │      │         │ 19        │ *     │ * │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 40 │      │       │   │ 16   │      │         │           │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 35 │      │       │   │ 28   │ 13   │         │           │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │       │   │      │      │         │           │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│    │      │       │   │      │ 44   │         │           │       │   │
+├────┼──────┼───────┼───┼──────┼──────┼─────────┼───────────┼───────┼───┤
+│ 20 │ 1 26 │ 10    │   │ 0 43 │ 7 24 │         │           │       │   │
+└────┴──────┴───────┴───┴──────┴──────┴─────────┴───────────┴───────┴───┘
+
+2023-09-28 23:02:21,168 - Now polling all soldiers after the impact.
+2023-09-28 23:02:21,187 - Remaining alive soldiers: 44
+2023-09-28 23:02:21,187 - Soldiers currently alive:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+2023-09-28 23:02:21,187 - Soldiers currently dead:[12, 17, 23, 31, 36, 49]
+2023-09-28 23:02:21,202 - Current grid arrangement:
+┌────┬──────┬───────┬────┬───────┬──────┬──────────────┬────┬────┬───┐
+│    │ 34   │       │    │       │      │              │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│    │ 32   │ 15 46 │    │       │      │ 21 30 48     │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 9  │      │ 22    │    │ 39    │      │              │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 42 │ 4    │       │    │ 8     │ 33   │ 3 6 14 27 37 │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 11 │      │       │    │ 5 47  │      │ 45           │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 40 │      │       │    │ 16 18 │ 25   │              │ 19 │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 35 │      │       │ 29 │ 28 41 │ 13   │              │    │ 38 │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│    │      │ 2     │    │       │      │              │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│    │      │       │    │       │ 44   │              │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 20 │ 1 26 │ 10    │    │ 0 43  │ 7 24 │              │    │    │   │
+└────┴──────┴───────┴────┴───────┴──────┴──────────────┴────┴────┴───┘
+
+2023-09-28 23:02:21,203 - Controller notified the current commander.
+2023-09-28 23:02:22,137 - [Time = 9]Currently there are 88.0% soldiers alive.
+2023-09-28 23:02:22,137 - Controller received missile notification.
+2023-09-28 23:02:22,138 - Controller has been asked to broadcast the missile details to all soldiers.
+2023-09-28 23:02:22,168 - Controller finished broadcasting to all soldiers.
+2023-09-28 23:02:22,169 - Current grid arrangement:
+┌────┬──────┬───────┬────┬───────┬──────┬──────────────┬────┬────┬───┐
+│    │ 34   │       │    │       │      │              │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ *  │ 32   │ 15 46 │ *  │ *     │ *    │ 21 30 48     │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 9  │ *    │ 22    │ *  │ 39    │ *    │ *            │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 42 │ 4    │ *     │ *  │ 8     │ 33   │ 3 6 14 27 37 │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 11 │ *    │ *     │ *  │ 5 47  │ *    │ 45           │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 40 │ *    │ *     │ *  │ 16 18 │ 25   │ *            │ 19 │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 35 │ *    │ *     │ 29 │ 28 41 │ 13   │ *            │    │ 38 │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ *  │ *    │ 2     │ *  │ *     │ *    │ *            │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│    │      │       │    │       │ 44   │              │    │    │   │
+├────┼──────┼───────┼────┼───────┼──────┼──────────────┼────┼────┼───┤
+│ 20 │ 1 26 │ 10    │    │ 0 43  │ 7 24 │              │    │    │   │
+└────┴──────┴───────┴────┴───────┴──────┴──────────────┴────┴────┴───┘
+
+2023-09-28 23:02:22,169 - Now polling all soldiers after the impact.
+2023-09-28 23:02:22,188 - Remaining alive soldiers: 40
+2023-09-28 23:02:22,188 - Soldiers currently alive:[0, 1, 2, 3, 4, 6, 7, 9, 10, 11, 13, 14, 15, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 37, 38, 39, 40, 41, 43, 44, 45, 46, 48]
+2023-09-28 23:02:22,188 - Soldiers currently dead:[5, 8, 12, 17, 23, 31, 36, 42, 47, 49]
+2023-09-28 23:02:22,202 - Current grid arrangement:
+┌──────┬──────┬───────┬───────┬──────────────┬───────┬──────────┬───────┬────┬────┐
+│ 9 11 │ 34   │ 15 22 │ 32 46 │ 4 39         │       │ 21 30 48 │       │    │ 6  │
+├──────┼──────┼───────┼───────┼──────────────┼───────┼──────────┼───────┼────┼────┤
+│      │      │       │       │              │       │          │       │    │    │
+├──────┼──────┼───────┼───────┼──────────────┼───────┼──────────┼───────┼────┼────┤
+│      │      │       │       │              │       │          │ 37    │    │    │
+├──────┼──────┼───────┼───────┼──────────────┼───────┼──────────┼───────┼────┼────┤
+│      │      │       │       │              │       │          │ 25 27 │ 3  │    │
+├──────┼──────┼───────┼───────┼──────────────┼───────┼──────────┼───────┼────┼────┤
+│      │      │       │       │              │       │          │ 45    │    │    │
+├──────┼──────┼───────┼───────┼──────────────┼───────┼──────────┼───────┼────┼────┤
+│      │      │       │       │              │       │          │ 19 33 │ 14 │    │
+├──────┼──────┼───────┼───────┼──────────────┼───────┼──────────┼───────┼────┼────┤
+│      │      │       │       │              │       │          │       │ 38 │    │
+├──────┼──────┼───────┼───────┼──────────────┼───────┼──────────┼───────┼────┼────┤
+│      │      │       │       │              │       │          │       │    │    │
+├──────┼──────┼───────┼───────┼──────────────┼───────┼──────────┼───────┼────┼────┤
+│      │      │       │ 40    │ 28           │ 13 44 │          │ 16    │    │    │
+├──────┼──────┼───────┼───────┼──────────────┼───────┼──────────┼───────┼────┼────┤
+│ 20   │ 1 26 │ 10    │ 29    │ 0 2 18 35 43 │ 7 24  │          │       │    │ 41 │
+└──────┴──────┴───────┴───────┴──────────────┴───────┴──────────┴───────┴────┴────┘
+
+2023-09-28 23:02:22,202 - Controller notified the current commander.
+2023-09-28 23:02:23,137 - Time over. Currently 80.0% soldiers are alive.
+2023-09-28 23:02:23,138 - The game has been won by the soldiers.
+2023-09-28 23:02:23,138 - [[Killing soldier 0]]
+2023-09-28 23:02:23,139 - [[Killing soldier 1]]
+2023-09-28 23:02:23,141 - [[Killing soldier 2]]
+2023-09-28 23:02:23,142 - [[Killing soldier 3]]
+2023-09-28 23:02:23,144 - [[Killing soldier 4]]
+2023-09-28 23:02:23,145 - [[Killing soldier 5]]
+2023-09-28 23:02:23,146 - [[Killing soldier 6]]
+2023-09-28 23:02:23,147 - [[Killing soldier 7]]
+2023-09-28 23:02:23,148 - [[Killing soldier 8]]
+2023-09-28 23:02:23,149 - [[Killing soldier 9]]
+2023-09-28 23:02:23,150 - [[Killing soldier 10]]
+2023-09-28 23:02:23,151 - [[Killing soldier 11]]
+2023-09-28 23:02:23,152 - [[Killing soldier 12]]
+2023-09-28 23:02:23,152 - [[Killing soldier 13]]
+2023-09-28 23:02:23,153 - [[Killing soldier 14]]
+2023-09-28 23:02:23,154 - [[Killing soldier 15]]
+2023-09-28 23:02:23,155 - [[Killing soldier 16]]
+2023-09-28 23:02:23,156 - [[Killing soldier 17]]
+2023-09-28 23:02:23,157 - [[Killing soldier 18]]
+2023-09-28 23:02:23,157 - [[Killing soldier 19]]
+2023-09-28 23:02:23,158 - [[Killing soldier 20]]
+2023-09-28 23:02:23,159 - [[Killing soldier 21]]
+2023-09-28 23:02:23,160 - [[Killing soldier 22]]
+2023-09-28 23:02:23,160 - [[Killing soldier 23]]
+2023-09-28 23:02:23,161 - [[Killing soldier 24]]
+2023-09-28 23:02:23,162 - [[Killing soldier 25]]
+2023-09-28 23:02:23,162 - [[Killing soldier 26]]
+2023-09-28 23:02:23,163 - [[Killing soldier 27]]
+2023-09-28 23:02:23,164 - [[Killing soldier 28]]
+2023-09-28 23:02:23,165 - [[Killing soldier 29]]
+2023-09-28 23:02:23,165 - [[Killing soldier 30]]
+2023-09-28 23:02:23,166 - [[Killing soldier 31]]
+2023-09-28 23:02:23,167 - [[Killing soldier 32]]
+2023-09-28 23:02:23,167 - [[Killing soldier 33]]
+2023-09-28 23:02:23,168 - [[Killing soldier 34]]
+2023-09-28 23:02:23,169 - [[Killing soldier 35]]
+2023-09-28 23:02:23,169 - [[Killing soldier 36]]
+2023-09-28 23:02:23,170 - [[Killing soldier 37]]
+2023-09-28 23:02:23,171 - [[Killing soldier 38]]
+2023-09-28 23:02:23,171 - [[Killing soldier 39]]
+2023-09-28 23:02:23,172 - [[Killing soldier 40]]
+2023-09-28 23:02:23,173 - [[Killing soldier 41]]
+2023-09-28 23:02:23,173 - [[Killing soldier 42]]
+2023-09-28 23:02:23,174 - [[Killing soldier 43]]
+2023-09-28 23:02:23,175 - [[Killing soldier 44]]
+2023-09-28 23:02:23,175 - [[Killing soldier 45]]
+2023-09-28 23:02:23,176 - [[Killing soldier 46]]
+2023-09-28 23:02:23,176 - [[Killing soldier 47]]
+2023-09-28 23:02:23,177 - [[Killing soldier 48]]
+2023-09-28 23:02:23,178 - [[Killing soldier 49]]

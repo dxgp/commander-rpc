@@ -1,7 +1,8 @@
-The reposi
+The repository with our commit history exists at: https://github.com/dxgp/commander-rpc
+
 ## Assumptions
 We have made the following assumptions:
-1. Two soldiers can exist at the same position. We feel that this assumption is valid since if we were representing a real battlefied, the grids would capture a large area.
+1. Two soldiers can exist at the same position. We feel that this assumption is valid since if we were representing a real battlefied, the each cell in the grid would capture a large area.
 2. The election selects a random soldier.
 
 Additionally, some functions names are different in our code. I'll list the equivalent function names below:
@@ -61,4 +62,5 @@ The test cases we considered were as follows:
 7. Commander dead: New commander gets elected -> PASSED
 8. Commander dead: No more soldiers remaining -> PASSED
 9. Missile spanning the whole grid: All soldiers dead -> PASSED
+10. 10x10 grid with upto 50 soldiers -> PASSED
 

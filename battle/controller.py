@@ -225,5 +225,5 @@ def serve():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(filename="output.log", filemode="a", format="%(asctime)s - %(message)s", level=logging.DEBUG)
+    logging.basicConfig(filename="output.log", filemode="w+", format="%(asctime)s - %(message)s", level=logging.DEBUG)
     serve()
