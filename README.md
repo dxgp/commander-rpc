@@ -1,10 +1,4 @@
-## Compile Command
-
-```bash
-cd battle
-python -m grpc_tools.protoc -I ../protobufs --python_out=. --grpc_python_out=. ../protobufs/messages.proto
-```
-
+The reposi
 ## Assumptions
 We have made the following assumptions:
 1. Two soldiers can exist at the same position. We feel that this assumption is valid since if we were representing a real battlefied, the grids would capture a large area.
@@ -17,7 +11,43 @@ Additionally, some functions names are different in our code. I'll list the equi
 3. take_shelter was replaced with notify_soldier (the function further calls a local function in soldoer.py named can_survive).
 4. The print_layout function was replaced with print_battlefield inside controller.py.
 
-## How it Works
+## How to Start it
+First, the project's dependencies must be installed (use the following commands):
+```bash
+python -m pip install grpcio-tools
+python -m pip install protobuf
+python -m pip install termtables
+```
+
+Next, you must recompile the protobuf using the following command since proto files are highly dependent on the python version (YOU MUST BE INSIDE THE BATTLE FOLDER TO RUN THIS):
+
+```bash
+python -m grpc_tools.protoc -I ../protobufs --python_out=. --grpc_python_out=. ../protobufs/messages.proto
+```
+
+If you're running on a linux machine (preferable), use the following command (note that these must be run from INSIDE the battle folder):
+
+```
+sh run.sh
+```
+
+If you're not running on a linux based machine, kindly start up 4 separate terminals and run the following command in EACH of them (note that these commands must be run in this order ONLY):
+
+```bash
+python make_soldiers.py
+```
+
+```bash
+python controller.py
+```
+
+```bash
+python defense_mechanism.py
+```
+
+```bash
+python missile_launcher.py
+```
 
 
 ## Test Cases Considered
