@@ -44,10 +44,12 @@ class SoldierNotificationService(SoldierNotificationServicer):
         print(f"Soldier {self.soldier.number} received missile notification from commander! Calculating survival!")
         missile_x = request.x
         missile_y = request.y
-        time_remaining = request.t
+        time_to_impact = request.t
 
         missile_type = request.missile_type
-        survive = self.can_survive(missile_type, missile_x, missile_y, time_remaining)
+        survive = self.can_survive(missile_type, missile_x, missile_y, time_to_impact)
+        if not survive:
+            print(f"**** SOLDIER {self.soldier.number} IS NO MORE!!")
         self.soldier.is_alive = survive
         return Empty()
 
@@ -80,7 +82,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         print(f"SOLDIER {self.soldier.number} STARTED...")
         server.wait_for_termination()
 
-    def can_survive(self, missile_type, missile_x, missile_y, t):
+    def can_survive(self, missile_type, missile_x, missile_y, time_to_impact):
         impact_area = get_impact_area(missile_type, missile_x, missile_y)
         # If soldier is in the impact zone
         if self.can_get_hit(impact_area):
@@ -101,7 +103,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
 
             print(f"INITIAL DATA-> {self.soldier}")
             # Update soldier coordinates
-            self.move_soldier(distances, available_directions)
+            self.move_soldier(distances, available_directions, time_to_impact)
 
             print(f"AFTER MOVE-> {self.soldier}")
 
@@ -165,7 +167,7 @@ class SoldierNotificationService(SoldierNotificationServicer):
         return res
 
     # Move soldier in the direction of the least distance from impact area edge
-    def move_soldier(self, distances, available_directions):
+    def move_soldier(self, distances, available_directions, time_to_impact):
         available_moves = []
         for d in distances:
             if d[1] in available_directions:
@@ -176,7 +178,13 @@ class SoldierNotificationService(SoldierNotificationServicer):
         print(f"SELECTING MOVE: {available_moves[0]}")
         direction = available_moves[0][1]
         d = available_moves[0][0]
-        steps_remaining = self.soldier.speed - d - 1
+
+        # Return if soldier cannot move out of the impact area
+        max_possible_steps = self.soldier.speed * time_to_impact
+        if max_possible_steps <= d:
+            return
+
+        steps_remaining = max_possible_steps - d - 1
         print(f"**** Steps rem: {steps_remaining}")
         if steps_remaining <= 0:
             noise = 0
@@ -192,121 +200,117 @@ class SoldierNotificationService(SoldierNotificationServicer):
 
         if direction == Direction.RIGHT:
             print(f"*****IN RIGHT, d = {d}, speed = {self.soldier.speed}")
-            if self.soldier.speed > d:
-                dirs = [Direction.RIGHT]
-                if Direction.TOP_RIGHT in available_directions:
-                    dirs.append(Direction.TOP_RIGHT)
+            dirs = [Direction.RIGHT]
+            if Direction.TOP_RIGHT in available_directions:
+                dirs.append(Direction.TOP_RIGHT)
 
-                if Direction.BOTTOM_RIGHT in available_directions:
-                    dirs.append(Direction.BOTTOM_RIGHT)
+            if Direction.BOTTOM_RIGHT in available_directions:
+                dirs.append(Direction.BOTTOM_RIGHT)
 
-                # Select random direction
-                r = random.randint(0, len(dirs) - 1)
-                selected_direction = dirs[r]
+            # Select random direction
+            r = random.randint(0, len(dirs) - 1)
+            selected_direction = dirs[r]
 
-                if selected_direction == Direction.RIGHT:
-                    # Move right
-                    self.soldier.x = move_right
-                    print("(RIGHT) CONDITION TRIGGERED")
-                elif selected_direction == Direction.TOP_RIGHT:
-                    # Move top and right
-                    self.soldier.y = move_top
-                    self.soldier.x = move_right
-                    print("(TOP RIGHT) CONDITION TRIGGERED")
-                elif selected_direction == Direction.BOTTOM_RIGHT:
-                    # Move bottom and right
-                    self.soldier.y = move_bottom
-                    self.soldier.x = move_right
-                    print("(BOTTOM RIGHT) CONDITION TRIGGERED")
+            if selected_direction == Direction.RIGHT:
+                # Move right
+                self.soldier.x = move_right
+                print("(RIGHT) CONDITION TRIGGERED")
+            elif selected_direction == Direction.TOP_RIGHT:
+                # Move top and right
+                self.soldier.y = move_top
+                self.soldier.x = move_right
+                print("(TOP RIGHT) CONDITION TRIGGERED")
+            elif selected_direction == Direction.BOTTOM_RIGHT:
+                # Move bottom and right
+                self.soldier.y = move_bottom
+                self.soldier.x = move_right
+                print("(BOTTOM RIGHT) CONDITION TRIGGERED")
 
         elif direction == Direction.LEFT:
             print(f"*****IN LEFT, d = {d}, speed = {self.soldier.speed}")
-            if self.soldier.speed > d:
-                dirs = [Direction.LEFT]
+            dirs = [Direction.LEFT]
 
-                if Direction.TOP_LEFT in available_directions:
-                    dirs.append(Direction.TOP_LEFT)
+            if Direction.TOP_LEFT in available_directions:
+                dirs.append(Direction.TOP_LEFT)
 
-                if Direction.BOTTOM_LEFT in available_directions:
-                    dirs.append(Direction.BOTTOM_LEFT)
+            if Direction.BOTTOM_LEFT in available_directions:
+                dirs.append(Direction.BOTTOM_LEFT)
 
-                # Select random direction
-                r = random.randint(0, len(dirs) - 1)
-                selected_direction = dirs[r]
+            # Select random direction
+            r = random.randint(0, len(dirs) - 1)
+            selected_direction = dirs[r]
 
-                if selected_direction == Direction.LEFT:
-                    # Move left
-                    self.soldier.x = move_left
-                    print("(LEFT) CONDITION TRIGGERED")
-                elif selected_direction == Direction.TOP_LEFT:
-                    # Move top and left
-                    self.soldier.y = move_top
-                    self.soldier.x = move_left
-                    print("(TOP LEFT) CONDITION TRIGGERED")
-                elif selected_direction == Direction.BOTTOM_LEFT:
-                    # Move bottom and left
-                    self.soldier.y = move_bottom
-                    self.soldier.x = move_left
-                    print("(BOTTOM LEFT) CONDITION TRIGGERED")
+            if selected_direction == Direction.LEFT:
+                # Move left
+                self.soldier.x = move_left
+                print("(LEFT) CONDITION TRIGGERED")
+            elif selected_direction == Direction.TOP_LEFT:
+                # Move top and left
+                self.soldier.y = move_top
+                self.soldier.x = move_left
+                print("(TOP LEFT) CONDITION TRIGGERED")
+            elif selected_direction == Direction.BOTTOM_LEFT:
+                # Move bottom and left
+                self.soldier.y = move_bottom
+                self.soldier.x = move_left
+                print("(BOTTOM LEFT) CONDITION TRIGGERED")
 
         elif direction == Direction.TOP:
             print(f"*****IN TOP, d = {d}, speed = {self.soldier.speed}")
-            if self.soldier.speed > d:
-                dirs = [Direction.TOP]
+            dirs = [Direction.TOP]
 
-                if Direction.TOP_LEFT in available_directions:
-                    dirs.append(Direction.TOP_LEFT)
+            if Direction.TOP_LEFT in available_directions:
+                dirs.append(Direction.TOP_LEFT)
 
-                if Direction.TOP_RIGHT in available_directions:
-                    dirs.append(Direction.TOP_RIGHT)
+            if Direction.TOP_RIGHT in available_directions:
+                dirs.append(Direction.TOP_RIGHT)
 
-                # Select random direction
-                r = random.randint(0, len(dirs) - 1)
-                selected_direction = dirs[r]
+            # Select random direction
+            r = random.randint(0, len(dirs) - 1)
+            selected_direction = dirs[r]
 
-                if selected_direction == Direction.TOP:
-                    # Move top
-                    self.soldier.y = move_top
-                    print("(TOP) CONDITION TRIGGERED")
-                elif selected_direction == Direction.TOP_LEFT:
-                    # Move top and left
-                    self.soldier.y = move_top
-                    self.soldier.x = move_left
-                    print("(TOP LEFT) CONDITION TRIGGERED")
-                elif selected_direction == Direction.TOP_RIGHT:
-                    # Move top and right
-                    self.soldier.y = move_top
-                    self.soldier.x = move_right
-                    print("(TOP RIGHT) CONDITION TRIGGERED")
+            if selected_direction == Direction.TOP:
+                # Move top
+                self.soldier.y = move_top
+                print("(TOP) CONDITION TRIGGERED")
+            elif selected_direction == Direction.TOP_LEFT:
+                # Move top and left
+                self.soldier.y = move_top
+                self.soldier.x = move_left
+                print("(TOP LEFT) CONDITION TRIGGERED")
+            elif selected_direction == Direction.TOP_RIGHT:
+                # Move top and right
+                self.soldier.y = move_top
+                self.soldier.x = move_right
+                print("(TOP RIGHT) CONDITION TRIGGERED")
         else:
-            if self.soldier.speed > d:
-                print(f"*****IN BOTTOM, d = {d}, speed = {self.soldier.speed}")
-                dirs = [Direction.BOTTOM]
+            print(f"*****IN BOTTOM, d = {d}, speed = {self.soldier.speed}")
+            dirs = [Direction.BOTTOM]
 
-                if Direction.BOTTOM_LEFT in available_directions:
-                    dirs.append(Direction.BOTTOM_LEFT)
+            if Direction.BOTTOM_LEFT in available_directions:
+                dirs.append(Direction.BOTTOM_LEFT)
 
-                if Direction.BOTTOM_RIGHT in available_directions:
-                    dirs.append(Direction.BOTTOM_RIGHT)
+            if Direction.BOTTOM_RIGHT in available_directions:
+                dirs.append(Direction.BOTTOM_RIGHT)
 
-                # Select random direction
-                r = random.randint(0, len(dirs) - 1)
-                selected_direction = dirs[r]
+            # Select random direction
+            r = random.randint(0, len(dirs) - 1)
+            selected_direction = dirs[r]
 
-                if selected_direction == Direction.BOTTOM:
-                    # Move bottom
-                    self.soldier.y = move_bottom
-                    print("(BOTTOM) CONDITION TRIGGERED")
-                elif selected_direction == Direction.BOTTOM_LEFT:
-                    # Move bottom and left
-                    self.soldier.y = move_bottom
-                    self.soldier.x = move_left
-                    print("(BOTTOM LEFT) CONDITION TRIGGERED")
-                elif selected_direction == Direction.BOTTOM_RIGHT:
-                    # Move bottom and right
-                    self.soldier.y = move_bottom
-                    self.soldier.x = move_right
-                    print("(BOTTOM RIGHT) CONDITION TRIGGERED")
+            if selected_direction == Direction.BOTTOM:
+                # Move bottom
+                self.soldier.y = move_bottom
+                print("(BOTTOM) CONDITION TRIGGERED")
+            elif selected_direction == Direction.BOTTOM_LEFT:
+                # Move bottom and left
+                self.soldier.y = move_bottom
+                self.soldier.x = move_left
+                print("(BOTTOM LEFT) CONDITION TRIGGERED")
+            elif selected_direction == Direction.BOTTOM_RIGHT:
+                # Move bottom and right
+                self.soldier.y = move_bottom
+                self.soldier.x = move_right
+                print("(BOTTOM RIGHT) CONDITION TRIGGERED")
 
         print(f"***NEW POS***: ({self.soldier.x }, {self.soldier.y})")
         print(f"______________________________________________\n")
