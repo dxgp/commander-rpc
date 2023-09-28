@@ -101,7 +101,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
             self.current_commander = alive_soldiers[new_commander_index]
             #now,we'll call the make commander RPC in the soldier to notify it that it has been elected as the new commander
             stub = self.soldier_stubs.get(self.current_commander)
-            
+            stub.make_commander(Empty())
         print("NEW COMMANDER ELECTION COMPLETE.")
         #print("update_board called.")
         print(alive_soldiers)
