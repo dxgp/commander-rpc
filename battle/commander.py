@@ -77,6 +77,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
                 if(self.battlefield.battle_grid[j][i]==" "):
                     self.battlefield.battle_grid[j][i] = "*"
                     print(f"x:{i},y:{j})")
+        
         self.battlefield.print_battlefield()
     def update_board_positions(self):
         self.battlefield.init_new_grid()
@@ -121,7 +122,7 @@ class CommanderNotificationService(CommanderNotificationServicer):
 
 
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=20))
     add_CommanderNotificationServicer_to_server(CommanderNotificationService(), server)
     server.add_insecure_port("localhost:50001")
     server.start()

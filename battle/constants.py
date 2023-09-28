@@ -43,8 +43,8 @@ class Direction(Enum):
 
 
 class BoardEdges:
-    TOP_Y = 9
-    BOTTOM_Y = 0
+    TOP_Y = 0
+    BOTTOM_Y = 9
     LEFT_X = 0
     RIGHT_X = 9
 
@@ -72,6 +72,8 @@ def get_impact_area(missile_type, missile_x, missile_y):
     if(missile_right_x>BoardEdges.RIGHT_X): missile_right_x = BoardEdges.RIGHT_X
     if(missile_bottom_y>BoardEdges.BOTTOM_Y): missile_bottom_y = BoardEdges.BOTTOM_Y
     if(missile_top_y<BoardEdges.TOP_Y): missile_top_y = BoardEdges.TOP_Y
+
+
     impact_area = ImpactArea(
         left_x=missile_left_x, right_x=missile_right_x, top_y=missile_top_y, bottom_y=missile_bottom_y
     )

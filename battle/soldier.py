@@ -68,8 +68,6 @@ class SoldierNotificationService(SoldierNotificationServicer):
 
     def can_survive(self, missile_type, missile_x, missile_y, t):
         impact_area = get_impact_area(missile_type, missile_x, missile_y)
-        print("IMPACT AREA:")
-        print(impact_area)
         # If soldier is in the impact zone
         if self.can_get_hit(impact_area):
             top_distance, bottom_distance, left_distance, right_distance = self.get_distances_from_impact_edges(
@@ -143,30 +141,34 @@ class SoldierNotificationService(SoldierNotificationServicer):
                 available_moves.append(d)
 
         print(f"AVAILABLE MOVES: {available_moves}")
-        index = random.randint(0, len(available_moves) - 1)
+        #index = random.randint(0, len(available_moves) - 1)
+        index = 0
         print(f"SELECTING MOVE: {available_moves[index]}")
         direction = available_moves[index][1]
+        d = available_moves[index][0]
+        print(f"soldier_speed = {self.soldier.speed}, d[0] = {d}")
+        noise = random.randint(0,self.soldier.speed-d)
         if direction == Direction.RIGHT:
-            #self.soldier.x = min(self.soldier.x + self.soldier.speed, self.soldier.x + d[0] + 1, BoardEdges.RIGHT_X)
-            if(self.soldier.speed>d[0]):
-                self.soldier.x = self.soldier.x + d[0] + 1
-            print(f"***(RIGHT) PARAMS***: min({self.soldier.x + self.soldier.speed}, {self.soldier.x + d[0] + 1}, {BoardEdges.RIGHT_X})")
+            if(self.soldier.speed>d):
+                self.soldier.x = min(self.soldier.x + d + 1 + noise,BoardEdges.RIGHT_X)
+                print("(RIGHT) CONDITION TRIGGERED")
+            print(f"***(RIGHT) NEW POS***: ({self.soldier.x }, {self.soldier.y})")
         elif direction == Direction.LEFT:
-            #self.soldier.x = max(self.soldier.x - self.soldier.speed, self.soldier.x - d[0] - 1, BoardEdges.LEFT_X)
-            if(self.soldier.speed > d[0]):
-                self.soldier.x = self.soldier.x - d[0] - 1
-            print(f"***(LEFT) PARAMS***: max({self.soldier.x - self.soldier.speed}, {self.soldier.x - d[0] - 1}, {BoardEdges.LEFT_X})")
+            if(self.soldier.speed > d):
+                self.soldier.x = max(self.soldier.x - d - 1 - noise,BoardEdges.LEFT_X)
+                print("(LEFT) CONDITION TRIGGERED")
+            print(f"***(LEFT) NEW POS***: ({self.soldier.x }, {self.soldier.y})")
         elif direction == Direction.TOP:
-            # self.soldier.y = max(self.soldier.y - self.soldier.speed, self.soldier.y - d[0] - 1, BoardEdges.TOP_Y)
-            if(self.soldier.speed>d[0]):
-                self.soldier.y = self.soldier.y - d[0] - 1
-            print(f"***(TOP) PARAMS***: max({self.soldier.y - self.soldier.speed}, {self.soldier.y - d[0] - 1}, {BoardEdges.TOP_Y})")
+            if(self.soldier.speed>d):
+                self.soldier.y = max(self.soldier.y - d - 1 - noise,BoardEdges.TOP_Y)
+                print("(TOP) CONDITION TRIGGERED")
+            print(f"***(TOP) NEW POS***: ({self.soldier.x }, {self.soldier.y})")
         else:
-            #self.soldier.y = min(self.soldier.y + self.soldier.speed, self.soldier.y + d[0] + 1, BoardEdges.BOTTOM_Y)
-            if(self.soldier.speed>d[0]):
-                self.soldier.y = self.soldier.y + d[0] + 1
+            if(self.soldier.speed>d):
+                self.soldier.y = min(self.soldier.y + d + 1 + noise,BoardEdges.BOTTOM_Y)
+                print("(BOTTOM) CONDITION TRIGGERED")
             #print(f"***PARAMS***: max({self.soldier.y + self.soldier.speed}, {self.soldier.y + d[0] + 1}, {BoardEdges.BOTTOM_Y})")
-            print(f"***(BOTTOM) NEW POSITION***:({self.soldier.x},{self.soldier.y})")
+            print(f"***(BOTTOM) NEW POS***: ({self.soldier.x }, {self.soldier.y})")
 
 
 if __name__ == "__main__":
