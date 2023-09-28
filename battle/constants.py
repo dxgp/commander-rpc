@@ -4,7 +4,10 @@ from enum import Enum
 SOLDIER_COUNT = 10
 SOLDIER_BASE_PORT = 60000
 CONTROLLER_PORT = 50001
+DEFENSE_SYSTEM_PORT = 50000
 
+t = 1
+T = 10
 
 class MissileType:
     M1 = "M1"

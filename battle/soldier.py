@@ -10,7 +10,10 @@ from messages_pb2_grpc import (
 from messages_pb2 import Empty, survival_response, position_details, missile_details
 
 from constants import Direction, BoardEdges, get_impact_area, CONTROLLER_PORT
-
+import threading
+import time
+import _thread
+server = 0
 
 class Soldier:
     def __init__(self, soldier_number) -> None:
@@ -72,8 +75,19 @@ class SoldierNotificationService(SoldierNotificationServicer):
         print("** Called Controller.notify_controller **")
         return Empty()
 
+    def kill(self,request,context):
+        print("Killing soldier process...")
+        t = threading.Thread(target = self.kill_function)
+        t.setDaemon(False)
+        t.start()
+        return Empty()
+    
+    def kill_function(self):
+        time.sleep(0.1)
+        server.stop(0)
     # Util methods
     def serve(self):
+        global server
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
         add_SoldierNotificationServicer_to_server(self, server)
         server.add_insecure_port(f"localhost:{sys.argv[1]}")

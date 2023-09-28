@@ -7,17 +7,19 @@ from messages_pb2_grpc import (
     ControllerNotificationServicer,
     SoldierNotificationStub,
     add_ControllerNotificationServicer_to_server,
+    DefenseNotificationStub,
 )
 from messages_pb2 import missile_details, Empty
-from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area,BoardEdges
+from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area,BoardEdges,T,DEFENSE_SYSTEM_PORT
 import numpy as np
 import termtables as tt
 import random
 import logging
 import sys
 from io import StringIO
+import _thread,threading,time
 
-
+server = 0
 # Parent Class to store the current situation
 class BattleField:
     def __init__(self) -> None:
@@ -25,6 +27,7 @@ class BattleField:
         logging.debug(f"The initial commander has been decided as soldier {self.current_commander}")
         self.all_soldiers = dict([(i, True) for i in range(SOLDIER_COUNT)])
         self.init_new_grid()
+        self.t = 0
 
     def print_battlefield(self):
         tt.print(self.battle_grid)
@@ -61,11 +64,41 @@ class ControllerNotificationService(ControllerNotificationServicer):
 
         self.battlefield.print_battlefield()
 
+    def kill_function(self):
+        time.sleep(0.1)
+        server.stop(0)
     # RPCs
     def missile_notification(self, request, context):
+        if(self.battlefield.t>=T):
+            alive_percentage = len(self.get_alive_soldiers())/SOLDIER_COUNT *100
+            logging.debug(f"Time over. Currently {alive_percentage}% soldiers are alive.")
+            if(alive_percentage>=50):
+                logging.debug("The game has been won by the soldiers.")
+            else:
+                logging.debug("The game has been won by the enemies.")
+            # TODO: Write the code to kill all processes here...
+            # the current idea is to add a kill RPC to each service
+            for soldier_no,stub in self.soldier_stubs.items():
+                logging.debug(f"[[Killing soldier {soldier_no}]]")
+                stub.kill(Empty())
+            ds_channel = grpc.insecure_channel(f"localhost:{DEFENSE_SYSTEM_PORT}")
+            ds_stub = DefenseNotificationStub(ds_channel)
+            ds_stub.kill(Empty())
+            print("Now killing the controller")
+            t = threading.Thread(target = self.kill_function)
+            t.setDaemon(False)
+            t.start()
+            return Empty()
+            #_thread.interrupt_main()
+            
         print(
             f"Controller received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
         )
+
+        #checking to see the game's ending condition
+        logging.debug(f"[Time = {self.battlefield.t}]Currently there are {len(self.get_alive_soldiers())/SOLDIER_COUNT *100}% soldiers alive.")
+        self.battlefield.t = self.battlefield.t + request.t
+
         logging.debug("Controller received missile notification.")
         stub = self.soldier_stubs.get(self.battlefield.current_commander)
         request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
@@ -113,7 +146,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
         self.update_soldier_status()
         alive_soldiers = self.get_alive_soldiers()
         if self.battlefield.current_commander not in alive_soldiers:
-            new_commander_index = random.randint(0, len(alive_soldiers))
+            new_commander_index = random.randint(0, len(alive_soldiers) - 1)
             print(
                 f"The commander [Soldier {self.battlefield.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
             )
@@ -149,6 +182,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
     # Polls soldiers for liveness and updates their status in the battlefield
     def update_soldier_status(self):
         logging.debug("Now polling all soldiers after the impact.")
+
         for soldier in self.battlefield.all_soldiers.keys():
             stub = self.soldier_stubs.get(soldier)
             request = Empty()
@@ -166,6 +200,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
 
 
 def serve():
+    global server
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=20))
     add_ControllerNotificationServicer_to_server(ControllerNotificationService(), server)
     server.add_insecure_port(f"localhost:{CONTROLLER_PORT}")

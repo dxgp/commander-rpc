@@ -19,6 +19,11 @@ class DefenseNotificationStub(object):
                 request_serializer=messages__pb2.missile_details.SerializeToString,
                 response_deserializer=messages__pb2.Empty.FromString,
                 )
+        self.kill = channel.unary_unary(
+                '/DefenseNotification/kill',
+                request_serializer=messages__pb2.Empty.SerializeToString,
+                response_deserializer=messages__pb2.Empty.FromString,
+                )
 
 
 class DefenseNotificationServicer(object):
@@ -30,12 +35,23 @@ class DefenseNotificationServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def kill(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DefenseNotificationServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'launch_missile': grpc.unary_unary_rpc_method_handler(
                     servicer.launch_missile,
                     request_deserializer=messages__pb2.missile_details.FromString,
+                    response_serializer=messages__pb2.Empty.SerializeToString,
+            ),
+            'kill': grpc.unary_unary_rpc_method_handler(
+                    servicer.kill,
+                    request_deserializer=messages__pb2.Empty.FromString,
                     response_serializer=messages__pb2.Empty.SerializeToString,
             ),
     }
@@ -61,6 +77,23 @@ class DefenseNotification(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DefenseNotification/launch_missile',
             messages__pb2.missile_details.SerializeToString,
+            messages__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def kill(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/DefenseNotification/kill',
+            messages__pb2.Empty.SerializeToString,
             messages__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -194,6 +227,11 @@ class SoldierNotificationStub(object):
                 request_serializer=messages__pb2.Empty.SerializeToString,
                 response_deserializer=messages__pb2.Empty.FromString,
                 )
+        self.kill = channel.unary_unary(
+                '/SoldierNotification/kill',
+                request_serializer=messages__pb2.Empty.SerializeToString,
+                response_deserializer=messages__pb2.Empty.FromString,
+                )
 
 
 class SoldierNotificationServicer(object):
@@ -229,6 +267,12 @@ class SoldierNotificationServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def kill(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SoldierNotificationServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -254,6 +298,11 @@ def add_SoldierNotificationServicer_to_server(servicer, server):
             ),
             'make_commander': grpc.unary_unary_rpc_method_handler(
                     servicer.make_commander,
+                    request_deserializer=messages__pb2.Empty.FromString,
+                    response_serializer=messages__pb2.Empty.SerializeToString,
+            ),
+            'kill': grpc.unary_unary_rpc_method_handler(
+                    servicer.kill,
                     request_deserializer=messages__pb2.Empty.FromString,
                     response_serializer=messages__pb2.Empty.SerializeToString,
             ),
@@ -347,6 +396,23 @@ class SoldierNotification(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/SoldierNotification/make_commander',
+            messages__pb2.Empty.SerializeToString,
+            messages__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def kill(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/SoldierNotification/kill',
             messages__pb2.Empty.SerializeToString,
             messages__pb2.Empty.FromString,
             options, channel_credentials,

@@ -17,6 +17,8 @@ message Empty{}
 
 service DefenseNotification{
     rpc launch_missile(missile_details) returns (Empty);
+    rpc kill(Empty) returns (Empty);
+
 }
 service ControllerNotification{
     rpc missile_notification(missile_details) returns (Empty);
@@ -28,6 +30,7 @@ service SoldierNotification{
     rpc soldier_position(Empty) returns (position_details);   
     rpc notify_commander(missile_details) returns (Empty);
     rpc make_commander(Empty) returns (Empty);
+    rpc kill(Empty) returns (Empty);
 }
 
 // launch missile -> missile_notification (Controller) ->  notify_commander(Soldier) -> notify_controller (Controller) -> notify_all_soldiers (method in controller)
