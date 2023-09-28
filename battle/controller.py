@@ -10,12 +10,14 @@ from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, get_impact_area
 import numpy as np
 import termtables as tt
 import random
+import logging
 
 
 # Parent Class to store the current situation
 class BattleField:
     def __init__(self) -> None:
         self.current_commander = np.random.randint(0, SOLDIER_COUNT)
+        logging.debug(f"The initial commander has been decided as soldier {self.current_commander}")
         self.all_soldiers = dict([(i, True) for i in range(SOLDIER_COUNT)])
         self.init_new_grid()
 
@@ -53,15 +55,18 @@ class ControllerNotificationService(ControllerNotificationServicer):
         print(
             f"Controller received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
         )
+        logging.debug("Controller received missile notification.")
         stub = self.soldier_stubs.get(self.current_commander)
         request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
         stub.notify_commander(request)
         print("**Commander notified by controller**")
+        logging.debug("Controller notified the current commander.")
         # update_commander_if_needed()
         return Empty()
     
     def notify_controller(self,request,context):
         print("notify_controller called. It will now notify all soldiers on behalf of the commander")
+        logging.debug("Controller has been asked to broadcast the missile details to all soldiers.")
         self.notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
         # now, we'll have to poll the status of each soldier and update the battlefield accordingly
         self.print_impact_area(request.missile_type, request.x, request.y)
@@ -76,6 +81,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
             request = missile_details(missile_type=missile_type, x=missile_x, y=missile_y, t=missile_t)
             empty_val = stub.notify_soldier(request)
             print(f"Soldier {soldier} notified of incoming missile!")
+        logging.debug("Controller finished broadcasting to all soldiers.")
         print(self.get_alive_soldiers())
 
     def print_impact_area(self, missile_type, x, y):
@@ -98,10 +104,12 @@ class ControllerNotificationService(ControllerNotificationServicer):
         if(self.current_commander not in alive_soldiers):
             new_commander_index = random.randint(0,len(alive_soldiers))
             print(f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}")
+            logging.debug(f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}")
             self.current_commander = alive_soldiers[new_commander_index]
             #now,we'll call the make commander RPC in the soldier to notify it that it has been elected as the new commander
             stub = self.soldier_stubs.get(self.current_commander)
             stub.make_commander(Empty())
+            logging.debug(f"The newly elected commander [{self.current_commander}] has been notified of his new position.")
         print("NEW COMMANDER ELECTION COMPLETE.")
         #print("update_board called.")
         print(alive_soldiers)
@@ -119,16 +127,17 @@ class ControllerNotificationService(ControllerNotificationServicer):
             self.battlefield.battle_grid[pos_reply.y][pos_reply.x] = str(soldier)
         else:
             self.battlefield.battle_grid[pos_reply.y][pos_reply.x] += f" {soldier}"
-
         # print(f"Soldier {soldier}'s position polled at {pos_reply.x},{pos_reply.y}")
 
     # Polls soldiers for liveness and updates their status in the battlefield
     def update_soldier_status(self):
+        logging.debug("Now polling all soldiers after the impact.")
         for soldier in self.battlefield.all_soldiers.keys():
             stub = self.soldier_stubs.get(soldier)
             request = Empty()
             survival_reply = stub.soldier_status(request)
             self.battlefield.all_soldiers[soldier] = survival_reply.is_alive
+        logging.debug(f"Remaining alive soldiers: {len(self.get_alive_soldiers())}")
 
     # Return only alive soldiers from all_soldiers
     def get_alive_soldiers(self):
@@ -149,4 +158,5 @@ def serve():
 
 
 if __name__ == "__main__":
+    logging.basic_config(filename="output.log",filemode='a',format='%(asctime)s - %(message)s',level=logging.DEBUG)
     serve()
