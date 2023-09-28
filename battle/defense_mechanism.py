@@ -6,7 +6,7 @@ from messages_pb2_grpc import (
     add_DefenseNotificationServicer_to_server,
 )
 from messages_pb2 import Empty, missile_details
-from constants import DEFENSE_SYSTEM_PORT,CONTROLLER_PORT
+from constants import DEFENSE_SYSTEM_PORT,CONTROLLER_PORT,CONTROLLER_IP,DEFENSE_NOTIFICATION_IP
 import threading,time,_thread
 
 server = 0
@@ -16,7 +16,7 @@ class DefenseNotificationService(DefenseNotificationServicer):
         print("In launch missile******")
         # Call Commander notification service
         # Create commander stub object
-        controller_channel = grpc.insecure_channel(f"localhost:{CONTROLLER_PORT}")
+        controller_channel = grpc.insecure_channel(f"{CONTROLLER_IP}:{CONTROLLER_PORT}")
         controller_stub = ControllerNotificationStub(controller_channel)
         # Send missile details to commander
         comm_request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
@@ -39,7 +39,7 @@ def serve():
     print("****Server started")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     add_DefenseNotificationServicer_to_server(DefenseNotificationService(), server)
-    server.add_insecure_port(f"localhost:{DEFENSE_SYSTEM_PORT}")
+    server.add_insecure_port(f"{DEFENSE_NOTIFICATION_IP}:{DEFENSE_SYSTEM_PORT}")
     server.start()
     server.wait_for_termination()
 
