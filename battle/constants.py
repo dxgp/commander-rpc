@@ -3,6 +3,7 @@ from enum import Enum
 
 SOLDIER_COUNT = 10
 SOLDIER_BASE_PORT = 60000
+CONTROLLER_PORT = 50001
 
 
 class MissileType:
@@ -83,6 +84,3 @@ def get_impact_area(missile_type, missile_x, missile_y):
     )
 
     return impact_area
-
-
-

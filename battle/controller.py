@@ -1,4 +1,7 @@
 import grpc
+import numpy as np
+import termtables as tt
+import random
 from concurrent import futures
 from messages_pb2_grpc import (
     ControllerNotificationServicer,
@@ -6,7 +9,7 @@ from messages_pb2_grpc import (
     add_ControllerNotificationServicer_to_server,
 )
 from messages_pb2 import missile_details, Empty
-from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, get_impact_area
+from constants import SOLDIER_COUNT, SOLDIER_BASE_PORT, CONTROLLER_PORT, get_impact_area
 import numpy as np
 import termtables as tt
 import random
@@ -50,7 +53,7 @@ class ControllerNotificationService(ControllerNotificationServicer):
 
         self.battlefield.print_battlefield()
 
-    #RPCs
+    # RPCs
     def missile_notification(self, request, context):
         print(
             f"Controller received missile notification!Arguments missile_type: {request.missile_type}, x: {request.x}, y: {request.y}, t: {request.t}"
@@ -63,8 +66,8 @@ class ControllerNotificationService(ControllerNotificationServicer):
         logging.debug("Controller notified the current commander.")
         # update_commander_if_needed()
         return Empty()
-    
-    def notify_controller(self,request,context):
+
+    def notify_controller(self, request, context):
         print("notify_controller called. It will now notify all soldiers on behalf of the commander")
         logging.debug("Controller has been asked to broadcast the missile details to all soldiers.")
         self.notify_all_soldiers(request.missile_type, request.x, request.y, request.t)
@@ -101,17 +104,23 @@ class ControllerNotificationService(ControllerNotificationServicer):
         self.battlefield.init_new_grid()
         self.update_soldier_status()
         alive_soldiers = self.get_alive_soldiers()
-        if(self.current_commander not in alive_soldiers):
-            new_commander_index = random.randint(0,len(alive_soldiers))
-            print(f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}")
-            logging.debug(f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}")
+        if self.current_commander not in alive_soldiers:
+            new_commander_index = random.randint(0, len(alive_soldiers))
+            print(
+                f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
+            )
+            logging.debug(
+                f"The commander [Soldier {self.current_commander}] is dead. The new commander will now be {alive_soldiers[new_commander_index]}"
+            )
             self.current_commander = alive_soldiers[new_commander_index]
-            #now,we'll call the make commander RPC in the soldier to notify it that it has been elected as the new commander
+            # now,we'll call the make commander RPC in the soldier to notify it that it has been elected as the new commander
             stub = self.soldier_stubs.get(self.current_commander)
             stub.make_commander(Empty())
-            logging.debug(f"The newly elected commander [{self.current_commander}] has been notified of his new position.")
+            logging.debug(
+                f"The newly elected commander [{self.current_commander}] has been notified of his new position."
+            )
         print("NEW COMMANDER ELECTION COMPLETE.")
-        #print("update_board called.")
+        # print("update_board called.")
         print(alive_soldiers)
         for soldier in alive_soldiers:
             self.update_soldier_position(soldier)
@@ -151,12 +160,12 @@ class ControllerNotificationService(ControllerNotificationServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=20))
     add_ControllerNotificationServicer_to_server(ControllerNotificationService(), server)
-    server.add_insecure_port("localhost:50001")
+    server.add_insecure_port(f"localhost:{CONTROLLER_PORT}")
     server.start()
     print("Controller STARTED....")
     server.wait_for_termination()
 
 
 if __name__ == "__main__":
-    logging.basic_config(filename="output.log",filemode='a',format='%(asctime)s - %(message)s',level=logging.DEBUG)
+    logging.basic_config(filename="output.log", filemode="a", format="%(asctime)s - %(message)s", level=logging.DEBUG)
     serve()

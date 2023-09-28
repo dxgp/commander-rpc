@@ -2,10 +2,14 @@ import grpc
 import random
 import sys
 from concurrent import futures
-from messages_pb2_grpc import SoldierNotificationServicer, add_SoldierNotificationServicer_to_server
-from messages_pb2 import Empty, survival_response, position_details
+from messages_pb2_grpc import (
+    SoldierNotificationServicer,
+    add_SoldierNotificationServicer_to_server,
+    ControllerNotificationStub,
+)
+from messages_pb2 import Empty, survival_response, position_details, missile_details
 
-from constants import Direction, BoardEdges, get_impact_area, ImpactArea
+from constants import Direction, BoardEdges, get_impact_area, CONTROLLER_PORT
 
 
 class Soldier:
@@ -32,6 +36,8 @@ class SoldierNotificationService(SoldierNotificationServicer):
         soldier_number = int(sys.argv[1]) - 60000  # okay, need to pass a port number as the argument
         # soldier_number = 60000 - 60000
         self.soldier = Soldier(soldier_number)
+        controller_channel = grpc.insecure_channel(f"localhost:{CONTROLLER_PORT}")
+        self.controller_stub = ControllerNotificationStub(controller_channel)
 
     # RPCs
     def notify_soldier(self, request, context):
@@ -56,6 +62,11 @@ class SoldierNotificationService(SoldierNotificationServicer):
     def make_commander(self, request, context):
         self.soldier.is_commander = True
         return Empty()
+
+    def notify_commander(self, request, context):
+        request = missile_details(missile_type=request.missile_type, x=request.x, y=request.y, t=request.t)
+        self.controller_stub.notify_controller(request)
+        print("** Called Controller.notify_controller **")
 
     # Util methods
     def serve(self):
